@@ -3,8 +3,18 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</loc>
+    <lastmod>2018-08-06T22:18:31+08:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://fenggolang.github.io/about/</loc>
     <lastmod>2018-08-06T21:13:31+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://fenggolang.github.io/archives/</loc>
+    <priority>0</priority>
   </url>
   
   <url>
@@ -13,13 +23,19 @@
   </url>
   
   <url>
-    <loc>https://fenggolang.github.io/tags/</loc>
+    <loc>https://fenggolang.github.io/</loc>
+    <lastmod>2018-08-06T22:18:31+08:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://fenggolang.github.io/</loc>
-    <lastmod>2018-08-06T21:13:31+08:00</lastmod>
+    <loc>https://fenggolang.github.io/post/</loc>
+    <lastmod>2018-08-06T22:18:31+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://fenggolang.github.io/tags/</loc>
     <priority>0</priority>
   </url>
   

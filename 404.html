@@ -6,6 +6,10 @@
 
 
 
+  
+
+
+  
 
 <!DOCTYPE html>
 <html lang="zh-cn">
@@ -15,28 +19,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
     <title>404 Page not found</title>
-    <meta name="author" content="">
+    <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="https://fenggolang.github.io/favicon.png">
     
 
     
-    <meta name="description" content="">
-    <meta property="og:description" content="">
+    <meta name="description" content="Hugo tranquilpeak theme demo">
+    <meta property="og:description" content="Hugo tranquilpeak theme demo">
     <meta property="og:type" content="blog">
     <meta property="og:title" content="404 Page not found">
     <meta property="og:url" content="">
-    <meta property="og:site_name" content="wangpengcheng的个人博客">
+    <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="wangpengcheng的个人博客">
-    <meta name="twitter:description" content="">
+    <meta name="twitter:title" content="Hugo tranquilpeak theme">
+    <meta name="twitter:description" content="Hugo tranquilpeak theme demo">
     
     
 
     
     
 
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/5151d344620dc05a883af0561d36c33d?s=640">
     
 
     
@@ -51,7 +57,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
     
     
-    <link rel="stylesheet" href="/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
+    <link rel="stylesheet" href="https://fenggolang.github.io/css/style-jsjn0006wyhpyzivf6yceb31gvpjatbcs3qzjvlumobfnugccvobqwxnnaj8.min.css" />
     
     
 
@@ -65,7 +71,7 @@
   <article class="post">
     <h1>404 Not Found</h1>
     <p>Sorry, but we couldn't find the page you're looking for.</p>
-    <p>Please head back <a href="/">home</a>.</p>
+    <p>Please head back <a href="https://fenggolang.github.io/">home</a>.</p>
   </article>
 </main>
     
@@ -75,9 +81,25 @@
       <i class="fa fa-remove"></i>
     </div>
     
-    <h4 id="about-card-name"></h4>
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/5151d344620dc05a883af0561d36c33d?s=110" alt="作者的图片" />
+    
+    <h4 id="about-card-name">wang pengcheng</h4>
+    
+      <div id="about-card-bio"><strong>PaaS平台从业者</strong></div>
     
     
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        容器云
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        中国.成都
+      </div>
     
   </div>
 </div>
@@ -93,13 +115,30 @@
       <i class="search-icon fa fa-search"></i>
       <form id="algolia-search-form">
         <input type="text" id="algolia-search-input" name="search"
-          class="form-control input--large search-input" placeholder="" />
+          class="form-control input--large search-input" placeholder="搜索" />
       </form>
     </div>
     <div class="modal-body">
       <div class="no-result text-color-light text-center"></div>
       <div class="results">
         
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+                <h3 class="media-heading">k8s培训准备工作</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c++ -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
         
       </div>
     </div>
@@ -108,22 +147,41 @@
          data-message-zero=""
          data-message-one=""
          data-message-other="">
-         0 posts found
+         1 posts found
       </p>
     </div>
   </div>
 </div>
     
+  
+    
+    <div id="cover" style="background-image:url('https://fenggolang.github.io/images/cover.jpg');"></div>
+  
+
 
     
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js" integrity="sha256-/BfiIkHlHoVihZdc6TFuj7MmJ0TWcWsMXkeDFwhi0zw=" crossorigin="anonymous"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.7/js/jquery.fancybox.min.js" integrity="sha256-GEAnjcTqVP+vBp3SSc8bEDQqvWAZMiHyUSIorrWwH50=" crossorigin="anonymous"></script>
 
 
-<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+<script src="https://fenggolang.github.io/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
 
 
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight > code, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
 
 
 

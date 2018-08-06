@@ -1,6 +1,8 @@
 
 
   
+    
+  
 
 
   
@@ -20,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>About</title>
+    <title>k8s培训准备工作</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
@@ -28,15 +30,15 @@
     
 
     
-    <meta name="description" content="">
-    <meta property="og:description" content="">
+    <meta name="description" content="准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c&#43;&#43; -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.">
+    <meta property="og:description" content="准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c&#43;&#43; -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="About">
-    <meta property="og:url" content="/about/">
+    <meta property="og:title" content="k8s培训准备工作">
+    <meta property="og:url" content="/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="">
+    <meta name="twitter:description" content="准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c&#43;&#43; -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.">
     
     
 
@@ -71,7 +73,7 @@
 
   <body>
     <div id="blog">
-      <header id="header" data-behavior="1">
+      <header id="header" data-behavior="4">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
     <a class="header-title-link" href="https://fenggolang.github.io/">Hugo tranquilpeak theme</a>
@@ -91,7 +93,7 @@
   
 </header>
 
-      <nav id="sidebar" data-behavior="1">
+      <nav id="sidebar" data-behavior="4">
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
@@ -201,7 +203,7 @@
 
       
 
-      <div id="main" data-behavior="1"
+      <div id="main" data-behavior="4"
         class="
                hasCoverMetaIn
                ">
@@ -211,13 +213,13 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      About
+      k8s培训准备工作
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-08-06T21:13:31&#43;08:00">
+      <time itemprop="datePublished" datetime="2018-08-06T22:18:31&#43;08:00">
         
   八月 6, 2018
 
@@ -231,6 +233,85 @@
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
               
+
+<h3 id="准备工作">准备工作</h3>
+
+<h4 id="一-相关工具">(一): 相关工具</h4>
+
+<pre><code class="language-bash">git、make、goland
+</code></pre>
+
+<hr />
+
+<h4 id="二-运行环境">(二): 运行环境</h4>
+
+<h5 id="linux运行环境">linux运行环境</h5>
+
+<pre><code class="language-bash"># 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1)
+[wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz
+[wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/
+[wpc@centos7 ~]$ sudo vim /etc/profile
+export GOROOT=/usr/local/go
+export PATH=$GOROOT/bin:$PATH
+[wpc@centos7 ~]$ source /etc/profile
+[wpc@centos7 ~]$ go version
+go version go1.9.1 linux/amd64
+[wpc@centos7 ~]$ 
+
+# 2. 下载编译k8s源码
+[wpc@centos7 ~]$ sudo yum install git gcc gcc-c++ -y
+## 方式一(官方)：
+$ go get -d k8s.io/kubernetes
+$ cd $GOPATH/src/k8s.io/kubernetes
+$ make
+# 方式二(快速,下载指定版本,只克隆最近一次commit):
+[wpc@centos7 k8s.io]$ pwd
+/home/wpc/go/src/k8s.io
+[wpc@centos7 k8s.io]$ git clone -b v1.9.1 --depth 1 https://github.com/kubernetes/kubernetes.git
+正克隆到 'kubernetes'...
+[wpc@centos7 k8s.io]$ cd kubernetes/
+[wpc@centos7 kubernetes]$ git tag
+v1.9.1
+[wpc@centos7 kubernetes]$ git branch
+* （非分支）
+# 切换到新分支
+[wpc@centos7 kubernetes]$ git checkout -b release-1.9 
+切换到一个新分支 'release-1.9'
+[wpc@centos7 kubernetes]$ git branch
+* release-1.9
+[wpc@centos7 kubernetes]$ 
+# 编译
+[wpc@centos7 kubernetes]$ make
+[root@host-172-18-2-3 kubernetes]# ls -l _output/bin/
+......
+</code></pre>
+
+<h5 id="mac">mac</h5>
+
+<pre><code class="language-bash">同上
+</code></pre>
+
+<h5 id="windows">windows</h5>
+
+<pre><code class="language-bash">因为k8s源代码中包含软连接，Windows下不识别linux下的软连接，且vendor/k8s.io下面的文件和目录是软连接到staging目录的，所以在make构建的时候会报错找不到相关包文件，所以windows下不推荐。
+</code></pre>
+
+<h4 id="三-openshift编译构建">(三)：openshift编译构建</h4>
+
+<pre><code class="language-bash"># -b, --branch &lt;分支&gt;   检出 &lt;分支&gt; 而不是远程 HEAD
+# 进入$GOPATH/src/github.com/openshift目录下
+git clone -b release-3.9 --depth 1 https://github.com/openshift/origin.git
+# git clone -b v3.9.0 --depth 1 https://github.com/openshift/origin.git
+// 在deepin linux系统上面克隆失败，暂时使用的是GitKraken 克隆的,克隆完毕之后进入origin目录切换分支为v3.9.0
+cd origin
+git checkout -b v3.9.0
+make
+mv _output/local/bin/linux/amd64/oc  /usr/local/bin
+
+# https://github.com/xiaoping378/blog/blob/master/posts/openshift%E6%BA%90%E7%A0%81-%E7%BC%96%E8%AF%91%E5%92%8C%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.md
+# https://github.com/xiaoping378/blog/blob/master/posts/openshift%E5%AE%9E%E8%B7%B5-%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85.md
+</code></pre>
+
               
             </div>
           </div>
@@ -271,19 +352,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -323,7 +404,7 @@
 </footer>
 
       </div>
-      <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
         
   <div class="post-actions-wrap">
       <nav >
@@ -357,19 +438,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -394,24 +475,24 @@
 
 
       </div>
-      <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <i id="btn-close-shareoptions" class="fa fa-close"></i>
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2Fabout%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fk8s%25E5%259F%25B9%25E8%25AE%25AD%25E5%2587%2586%25E5%25A4%2587%25E5%25B7%25A5%25E4%25BD%259C%2F">
           <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2Fabout%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fk8s%25E5%259F%25B9%25E8%25AE%25AD%25E5%2587%2586%25E5%25A4%2587%25E5%25B7%25A5%25E4%25BD%259C%2F">
           <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2Fabout%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fk8s%25E5%259F%25B9%25E8%25AE%25AD%25E5%2587%2586%25E5%25A4%2587%25E5%25B7%25A5%25E4%25BD%259C%2F">
           <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
         </a>
       </li>
@@ -534,9 +615,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/fenggolang.github.io\/about\/';
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/08\/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C\/';
           
-            this.page.identifier = '\/about\/'
+            this.page.identifier = '\/2018\/08\/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C\/'
           
         };
         (function() {
