@@ -225,6 +225,64 @@
     
     <div class="postShorten-header">
       <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
+          golang控制goroutine的几种方式比较
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2018-08-06T00:00:00Z">
+        
+  八月 6, 2018
+
+      </time>
+    
+    
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://fenggolang.github.io/categories/programming">programming</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      WaitGroup是一种控制并发的方式，它的这种方式是控制多个goroutine同时完成.一个很简单的例子，比如2个goroutine要同时都做完了，才算是完成，先做好的就要等着其他未完成的，所有的goroutine要都全部完成才可以.编程模式是wg.Add()-&gt;wg.Done()-&gt;wg.Wait()
+另外一种是chan通知方式通知其他goroutine说我这个goroutine结束了，编程模式是select-&gt;case &lt;- chan
+通过Context来通知，编程模式是select-&gt;case &lt;- ctx.Done() -&gt; cancel()
+Context控制多个goroutine,编程模式&hellip;
+package main import ( &quot;time&quot; &quot;fmt&quot; &quot;sync&quot; &quot;context&quot; ) func main() { //waitGroup() //chanSelect() //ContextSingleGoroutine() ContextMultiGoroutine() } // 使用WaitGroup来控制groutine func waitGroup(){ var wg sync.WaitGroup wg.Add(2) go func() { time.Sleep(2*time.Second) fmt.Println(&quot;1号员工完成&quot;) wg.Done() }() go func() { time.Sleep(2*time.Second) fmt.Println(&quot;2号员工完成&quot;) wg.Done() }() wg.Wait() fmt.Println(&quot;好了，所有员工都做完了，收工&quot;) } // 使用select case:chan来控制goroutine func chanSelect(){ stop:=make(chan bool) go func() { for { select { case&lt;-stop: fmt.Println(&quot;监控退出，停止了...&quot;) return default: fmt.
+      <p>
+        <a href="https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/" class="postShorten-excerpt_link link">阅读全文</a>
+        
+      </p>
+    </div>
+  </div>
+  
+</article>
+
+          
+            
+  
+    
+      
+        
+      
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
         <a class="link-unstyled" href="https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
           k8s培训准备工作
         </a>
@@ -232,13 +290,23 @@
       
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-08-06T22:18:31&#43;08:00">
+      <time itemprop="datePublished" datetime="2018-08-06T00:00:00Z">
         
   八月 6, 2018
 
       </time>
     
     
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://fenggolang.github.io/categories/paas">paas</a>, 
+    
+      <a class="category-link" href="https://fenggolang.github.io/categories/k8s">k8s</a>
+    
+  
+
   </div>
 
     </div>
@@ -250,6 +318,65 @@
       </p>
     </div>
   </div>
+  
+</article>
+
+          
+            
+  
+    
+  
+
+
+  
+
+<article class="postShorten postShorten--thumbnailimg-left" itemscope itemType="http://schema.org/BlogPosting">
+  <div class="postShorten-wrap">
+    
+    <div class="postShorten-header">
+      <h1 class="postShorten-title" itemprop="headline">
+        <a class="link-unstyled" href="https://fenggolang.github.io/2013/10/chinese-test/">
+          中文測試
+        </a>
+      </h1>
+      
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2013-10-02T00:00:00Z">
+        
+  十月 2, 2013
+
+      </time>
+    
+    
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://fenggolang.github.io/categories/tranquilpeak">tranquilpeak</a>, 
+    
+      <a class="category-link" href="https://fenggolang.github.io/categories/features">features</a>
+    
+  
+
+  </div>
+
+    </div>
+    <div class="postShorten-excerpt" itemprop="articleBody">
+      <p>This is a chinese test post to show you how chinese is displayed.
+</p>
+      <p>
+        <a href="https://fenggolang.github.io/2013/10/chinese-test/" class="postShorten-excerpt_link link">阅读全文</a>
+        
+      </p>
+    </div>
+  </div>
+  
+    <a href="https://fenggolang.github.io/2013/10/chinese-test/">
+      <div class="postShorten-thumbnailimg">
+        <img alt="" itemprop="image" src="//d1u9biwaxjngwg.cloudfront.net/chinese-test-post/vintage-140.jpg"/>
+      </div>
+    </a>
   
 </article>
 
@@ -317,6 +444,27 @@
           <div class="media">
             
             <div class="media-body">
+              <a class="link-unstyled" href="https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
+                <h3 class="media-heading">golang控制goroutine的几种方式比较</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Aug 8, 2018
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">WaitGroup是一种控制并发的方式，它的这种方式是控制多个goroutine同时完成.一个很简单的例子，比如2个goroutine要同时都做完了，才算是完成，先做好的就要等着其他未完成的，所有的goroutine要都全部完成才可以.编程模式是wg.Add()-&gt;wg.Done()-&gt;wg.Wait()
+另外一种是chan通知方式通知其他goroutine说我这个goroutine结束了，编程模式是select-&gt;case &lt;- chan
+通过Context来通知，编程模式是select-&gt;case &lt;- ctx.Done() -&gt; cancel()
+Context控制多个goroutine,编程模式&hellip;
+package main import ( &quot;time&quot; &quot;fmt&quot; &quot;sync&quot; &quot;context&quot; ) func main() { //waitGroup() //chanSelect() //ContextSingleGoroutine() ContextMultiGoroutine() } // 使用WaitGroup来控制groutine func waitGroup(){ var wg sync.WaitGroup wg.Add(2) go func() { time.Sleep(2*time.Second) fmt.Println(&quot;1号员工完成&quot;) wg.Done() }() go func() { time.Sleep(2*time.Second) fmt.Println(&quot;2号员工完成&quot;) wg.Done() }() wg.Wait() fmt.Println(&quot;好了，所有员工都做完了，收工&quot;) } // 使用select case:chan来控制goroutine func chanSelect(){ stop:=make(chan bool) go func() { for { select { case&lt;-stop: fmt.Println(&quot;监控退出，停止了...&quot;) return default: fmt.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
               <a class="link-unstyled" href="https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
                 <h3 class="media-heading">k8s培训准备工作</h3>
               </a>
@@ -331,6 +479,24 @@
             <hr>
           </div>
         
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://fenggolang.github.io/2013/10/chinese-test/">
+                <h3 class="media-heading">中文測試</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2013
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"><p>This is a chinese test post to show you how chinese is displayed.
+</p></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
       </div>
     </div>
     <div class="modal-footer">
@@ -338,7 +504,7 @@
          data-message-zero=""
          data-message-one=""
          data-message-other="">
-         1 posts found
+         3 posts found
       </p>
     </div>
   </div>

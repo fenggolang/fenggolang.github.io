@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Hugo tranquilpeak theme</title>
-    <link>https://fenggolang.github.io/</link>
-    <description>Recent content on Hugo tranquilpeak theme</description>
+    <title>Programming on Hugo tranquilpeak theme</title>
+    <link>https://fenggolang.github.io/categories/programming/</link>
+    <description>Recent content in Programming on Hugo tranquilpeak theme</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 06 Aug 2018 21:13:31 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 06 Aug 2018 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://fenggolang.github.io/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://fenggolang.github.io/categories/programming/index.xml" rel="self" type="application/rss+xml" />
     
-    
-    <item>
-      <title>About</title>
-      <link>https://fenggolang.github.io/about/</link>
-      <pubDate>Mon, 06 Aug 2018 21:13:31 +0800</pubDate>
-      
-      <guid>https://fenggolang.github.io/about/</guid>
-      <description></description>
-    </item>
     
     <item>
       <title>golang控制goroutine的几种方式比较</title>
@@ -31,25 +22,6 @@
 通过Context来通知，编程模式是select-&amp;gt;case &amp;lt;- ctx.Done() -&amp;gt; cancel()
 Context控制多个goroutine,编程模式&amp;hellip;
 package main import ( &amp;quot;time&amp;quot; &amp;quot;fmt&amp;quot; &amp;quot;sync&amp;quot; &amp;quot;context&amp;quot; ) func main() { //waitGroup() //chanSelect() //ContextSingleGoroutine() ContextMultiGoroutine() } // 使用WaitGroup来控制groutine func waitGroup(){ var wg sync.WaitGroup wg.Add(2) go func() { time.Sleep(2*time.Second) fmt.Println(&amp;quot;1号员工完成&amp;quot;) wg.Done() }() go func() { time.Sleep(2*time.Second) fmt.Println(&amp;quot;2号员工完成&amp;quot;) wg.Done() }() wg.Wait() fmt.Println(&amp;quot;好了，所有员工都做完了，收工&amp;quot;) } // 使用select case:chan来控制goroutine func chanSelect(){ stop:=make(chan bool) go func() { for { select { case&amp;lt;-stop: fmt.Println(&amp;quot;监控退出，停止了...&amp;quot;) return default: fmt.</description>
-    </item>
-    
-    <item>
-      <title>k8s培训准备工作</title>
-      <link>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</link>
-      <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</guid>
-      <description>准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c++ -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.</description>
-    </item>
-    
-    <item>
-      <title>中文測試</title>
-      <link>https://fenggolang.github.io/2013/10/chinese-test/</link>
-      <pubDate>Wed, 02 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>https://fenggolang.github.io/2013/10/chinese-test/</guid>
-      <description>&lt;p&gt;This is a chinese test post to show you how chinese is displayed.
-&lt;/p&gt;</description>
     </item>
     
   </channel>

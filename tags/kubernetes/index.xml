@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Kubernetes on Hugo tranquilpeak theme</title>
+    <link>https://fenggolang.github.io/tags/kubernetes/</link>
+    <description>Recent content in Kubernetes on Hugo tranquilpeak theme</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 06 Aug 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://fenggolang.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>k8s培训准备工作</title>
+      <link>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</link>
+      <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</guid>
+      <description>准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c++ -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.</description>
+    </item>
+    
+  </channel>
+</rss>

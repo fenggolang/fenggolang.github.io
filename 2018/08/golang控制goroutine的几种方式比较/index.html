@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>k8s培训准备工作</title>
+    <title>golang控制goroutine的几种方式比较</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
@@ -30,15 +30,27 @@
     
 
     
-    <meta name="description" content="准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c&#43;&#43; -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.">
-    <meta property="og:description" content="准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c&#43;&#43; -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.">
+    <meta name="description" content="WaitGroup是一种控制并发的方式，它的这种方式是控制多个goroutine同时完成.一个很简单的例子，比如2个goroutine要同时都做完了，才算是完成，先做好的就要等着其他未完成的，所有的goroutine要都全部完成才可以.编程模式是wg.Add()-&gt;wg.Done()-&gt;wg.Wait()
+另外一种是chan通知方式通知其他goroutine说我这个goroutine结束了，编程模式是select-&gt;case &lt;- chan
+通过Context来通知，编程模式是select-&gt;case &lt;- ctx.Done() -&gt; cancel()
+Context控制多个goroutine,编程模式&hellip;
+package main import ( &quot;time&quot; &quot;fmt&quot; &quot;sync&quot; &quot;context&quot; ) func main() { //waitGroup() //chanSelect() //ContextSingleGoroutine() ContextMultiGoroutine() } // 使用WaitGroup来控制groutine func waitGroup(){ var wg sync.WaitGroup wg.Add(2) go func() { time.Sleep(2*time.Second) fmt.Println(&quot;1号员工完成&quot;) wg.Done() }() go func() { time.Sleep(2*time.Second) fmt.Println(&quot;2号员工完成&quot;) wg.Done() }() wg.Wait() fmt.Println(&quot;好了，所有员工都做完了，收工&quot;) } // 使用select case:chan来控制goroutine func chanSelect(){ stop:=make(chan bool) go func() { for { select { case&lt;-stop: fmt.Println(&quot;监控退出，停止了...&quot;) return default: fmt.">
+    <meta property="og:description" content="WaitGroup是一种控制并发的方式，它的这种方式是控制多个goroutine同时完成.一个很简单的例子，比如2个goroutine要同时都做完了，才算是完成，先做好的就要等着其他未完成的，所有的goroutine要都全部完成才可以.编程模式是wg.Add()-&gt;wg.Done()-&gt;wg.Wait()
+另外一种是chan通知方式通知其他goroutine说我这个goroutine结束了，编程模式是select-&gt;case &lt;- chan
+通过Context来通知，编程模式是select-&gt;case &lt;- ctx.Done() -&gt; cancel()
+Context控制多个goroutine,编程模式&hellip;
+package main import ( &quot;time&quot; &quot;fmt&quot; &quot;sync&quot; &quot;context&quot; ) func main() { //waitGroup() //chanSelect() //ContextSingleGoroutine() ContextMultiGoroutine() } // 使用WaitGroup来控制groutine func waitGroup(){ var wg sync.WaitGroup wg.Add(2) go func() { time.Sleep(2*time.Second) fmt.Println(&quot;1号员工完成&quot;) wg.Done() }() go func() { time.Sleep(2*time.Second) fmt.Println(&quot;2号员工完成&quot;) wg.Done() }() wg.Wait() fmt.Println(&quot;好了，所有员工都做完了，收工&quot;) } // 使用select case:chan来控制goroutine func chanSelect(){ stop:=make(chan bool) go func() { for { select { case&lt;-stop: fmt.Println(&quot;监控退出，停止了...&quot;) return default: fmt.">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="k8s培训准备工作">
-    <meta property="og:url" content="/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+    <meta property="og:title" content="golang控制goroutine的几种方式比较">
+    <meta property="og:url" content="/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c&#43;&#43; -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.">
+    <meta name="twitter:description" content="WaitGroup是一种控制并发的方式，它的这种方式是控制多个goroutine同时完成.一个很简单的例子，比如2个goroutine要同时都做完了，才算是完成，先做好的就要等着其他未完成的，所有的goroutine要都全部完成才可以.编程模式是wg.Add()-&gt;wg.Done()-&gt;wg.Wait()
+另外一种是chan通知方式通知其他goroutine说我这个goroutine结束了，编程模式是select-&gt;case &lt;- chan
+通过Context来通知，编程模式是select-&gt;case &lt;- ctx.Done() -&gt; cancel()
+Context控制多个goroutine,编程模式&hellip;
+package main import ( &quot;time&quot; &quot;fmt&quot; &quot;sync&quot; &quot;context&quot; ) func main() { //waitGroup() //chanSelect() //ContextSingleGoroutine() ContextMultiGoroutine() } // 使用WaitGroup来控制groutine func waitGroup(){ var wg sync.WaitGroup wg.Add(2) go func() { time.Sleep(2*time.Second) fmt.Println(&quot;1号员工完成&quot;) wg.Done() }() go func() { time.Sleep(2*time.Second) fmt.Println(&quot;2号员工完成&quot;) wg.Done() }() wg.Wait() fmt.Println(&quot;好了，所有员工都做完了，收工&quot;) } // 使用select case:chan来控制goroutine func chanSelect(){ stop:=make(chan bool) go func() { for { select { case&lt;-stop: fmt.Println(&quot;监控退出，停止了...&quot;) return default: fmt.">
     
     
 
@@ -213,7 +225,7 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      k8s培训准备工作
+      golang控制goroutine的几种方式比较
     </h1>
   
   
@@ -230,9 +242,7 @@
   
     <span>发布在</span>
     
-      <a class="category-link" href="https://fenggolang.github.io/categories/paas">paas</a>, 
-    
-      <a class="category-link" href="https://fenggolang.github.io/categories/k8s">k8s</a>
+      <a class="category-link" href="https://fenggolang.github.io/categories/programming">programming</a>
     
   
 
@@ -242,84 +252,141 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              
+              <p>WaitGroup是一种控制并发的方式，它的这种方式是控制多个goroutine同时完成.一个很简单的例子，比如2个goroutine要同时都做完了，才算是完成，先做好的就要等着其他未完成的，所有的goroutine要都全部完成才可以.编程模式是wg.Add()-&gt;wg.Done()-&gt;wg.Wait()</p>
 
-<h3 id="准备工作">准备工作</h3>
+<p>另外一种是chan通知方式通知其他goroutine说我这个goroutine结束了，编程模式是select-&gt;case &lt;- chan</p>
 
-<h4 id="一-相关工具">(一): 相关工具</h4>
+<p>通过Context来通知，编程模式是select-&gt;case &lt;- ctx.Done() -&gt; cancel()</p>
 
-<pre><code class="language-bash">git、make、goland
-</code></pre>
+<p>Context控制多个goroutine,编程模式&hellip;</p>
 
 <hr />
 
-<h4 id="二-运行环境">(二): 运行环境</h4>
+<pre><code class="language-go">package main
 
-<h5 id="linux运行环境">linux运行环境</h5>
+import (
+	&quot;time&quot;
+	&quot;fmt&quot;
+	&quot;sync&quot;
+	&quot;context&quot;
+)
 
-<pre><code class="language-bash"># 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1)
-[wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz
-[wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/
-[wpc@centos7 ~]$ sudo vim /etc/profile
-export GOROOT=/usr/local/go
-export PATH=$GOROOT/bin:$PATH
-[wpc@centos7 ~]$ source /etc/profile
-[wpc@centos7 ~]$ go version
-go version go1.9.1 linux/amd64
-[wpc@centos7 ~]$ 
+func main() {
+	//waitGroup()
+	//chanSelect()
+	//ContextSingleGoroutine()
+	ContextMultiGoroutine()
+}
 
-# 2. 下载编译k8s源码
-[wpc@centos7 ~]$ sudo yum install git gcc gcc-c++ -y
-## 方式一(官方)：
-$ go get -d k8s.io/kubernetes
-$ cd $GOPATH/src/k8s.io/kubernetes
-$ make
-# 方式二(快速,下载指定版本,只克隆最近一次commit):
-[wpc@centos7 k8s.io]$ pwd
-/home/wpc/go/src/k8s.io
-[wpc@centos7 k8s.io]$ git clone -b v1.9.1 --depth 1 https://github.com/kubernetes/kubernetes.git
-正克隆到 'kubernetes'...
-[wpc@centos7 k8s.io]$ cd kubernetes/
-[wpc@centos7 kubernetes]$ git tag
-v1.9.1
-[wpc@centos7 kubernetes]$ git branch
-* （非分支）
-# 切换到新分支
-[wpc@centos7 kubernetes]$ git checkout -b release-1.9 
-切换到一个新分支 'release-1.9'
-[wpc@centos7 kubernetes]$ git branch
-* release-1.9
-[wpc@centos7 kubernetes]$ 
-# 编译
-[wpc@centos7 kubernetes]$ make
-[root@host-172-18-2-3 kubernetes]# ls -l _output/bin/
-......
-</code></pre>
+// 使用WaitGroup来控制groutine
+func waitGroup(){
+	var wg sync.WaitGroup
 
-<h5 id="mac">mac</h5>
+	wg.Add(2)
 
-<pre><code class="language-bash">同上
-</code></pre>
+	go func() {
+		time.Sleep(2*time.Second)
+		fmt.Println(&quot;1号员工完成&quot;)
+		wg.Done()
+	}()
 
-<h5 id="windows">windows</h5>
+	go func() {
+		time.Sleep(2*time.Second)
+		fmt.Println(&quot;2号员工完成&quot;)
+		wg.Done()
+	}()
 
-<pre><code class="language-bash">因为k8s源代码中包含软连接，Windows下不识别linux下的软连接，且vendor/k8s.io下面的文件和目录是软连接到staging目录的，所以在make构建的时候会报错找不到相关包文件，所以windows下不推荐。
-</code></pre>
+	wg.Wait()
 
-<h4 id="三-openshift编译构建">(三)：openshift编译构建</h4>
+	fmt.Println(&quot;好了，所有员工都做完了，收工&quot;)
+}
 
-<pre><code class="language-bash"># -b, --branch &lt;分支&gt;   检出 &lt;分支&gt; 而不是远程 HEAD
-# 进入$GOPATH/src/github.com/openshift目录下
-git clone -b release-3.9 --depth 1 https://github.com/openshift/origin.git
-# git clone -b v3.9.0 --depth 1 https://github.com/openshift/origin.git
-// 在deepin linux系统上面克隆失败，暂时使用的是GitKraken 克隆的,克隆完毕之后进入origin目录切换分支为v3.9.0
-cd origin
-git checkout -b v3.9.0
-make
-mv _output/local/bin/linux/amd64/oc  /usr/local/bin
+// 使用select case:chan来控制goroutine
+func chanSelect(){
+	stop:=make(chan bool)
 
-# https://github.com/xiaoping378/blog/blob/master/posts/openshift%E6%BA%90%E7%A0%81-%E7%BC%96%E8%AF%91%E5%92%8C%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.md
-# https://github.com/xiaoping378/blog/blob/master/posts/openshift%E5%AE%9E%E8%B7%B5-%E5%BF%AB%E9%80%9F%E5%AE%89%E8%A3%85.md
+	go func() {
+		for {
+			select {
+			case&lt;-stop:
+				fmt.Println(&quot;监控退出，停止了...&quot;)
+				return
+			default:
+				fmt.Println(&quot;goroutine监控中...&quot;)
+				time.Sleep(2*time.Second)
+			}
+		}
+	}()
+
+	time.Sleep(10*time.Second)
+	fmt.Println(&quot;可以了，通知监控停止&quot;)
+	stop&lt;-true
+	// 为了检测监控过是否停止，如果没有监控输出,就表示停止了
+	time.Sleep(5*time.Second)
+}
+
+// 使用Context来控制goroutine
+// Context控制单个goroutine
+func ContextSingleGoroutine(){
+	// context.Background() 返回一个空的Context，这个空的Context一般用于整个Context树的根节点。
+	// 然后我们使用context.WithCancel(parent)函数，创建一个可取消的子Context，然后当作参数传给
+	// goroutine使用，这样就可以使用这个子Context跟踪这个goroutine。
+	ctx,cancel:=context.WithCancel(context.Background())
+	go func(ctx context.Context) {
+		for {
+			// 在goroutine中，使用select调用&lt;-ctx.Done()判断是否要结束，如果接受到值的话，
+			// 就可以返回结束goroutine了；如果接收不到，就会继续进行监控。
+			select {
+			case &lt;- ctx.Done():
+				fmt.Println(&quot;监控退出，停止了...&quot;)
+				return
+			default:
+				fmt.Println(&quot;goroutine监控中...&quot;)
+				time.Sleep(2*time.Second)
+			}
+		}
+	}(ctx)
+
+	time.Sleep(10*time.Second)
+	fmt.Println(&quot;可以了，通知监控停止&quot;)
+	// 那么是如何发送结束指令的呢？这就是示例中的cancel函数啦，它是我们调用context.WithCancel(parent)函数生成子Context的
+	// 时候返回的，第二个返回值就是这个取消函数，它是CancelFunc类型的。我们调用它就可以发出取消指令，然后我们的监控goroutine就
+	// 会收到信号，就会返回结束。
+	cancel()
+
+	// 为了检测监控过是否停止，如果没有监控输出，就表示停止了
+	time.Sleep(5*time.Second)
+}
+
+// Context控制多个goroutine
+func ContextMultiGoroutine() {
+	ctx,cancel:=context.WithCancel(context.Background())
+	// 示例中启动了3个监控goroutine进行不断的监控，每一个都使用了Context进行跟踪，当我们使用cancel函数通知取消时，这3个goroutine都会
+	// 被结束。这就是Context的控制能力，它就像一个控制器一样，按下开关后，所有基于这个Context或者衍生的子Context都会收到通知，这时就可以
+	// 进行清理操作了，最终释放goroutine，这就优雅的解决了goroutine启动后不可控的问题。
+	go watch(ctx,&quot;【监控1】&quot;)
+	go watch(ctx,&quot;【监控2】&quot;)
+	go watch(ctx,&quot;【监控3】&quot;)
+
+	time.Sleep(10*time.Second)
+	fmt.Println(&quot;可以了，通知监控停止&quot;)
+	cancel()
+	//为了检测监控过是否停止，如果没有监控输出，就表示停止了
+	time.Sleep(5*time.Second)
+
+}
+func watch(ctx context.Context,name string){
+	for {
+		select {
+		case &lt;- ctx.Done():
+			fmt.Println(name,&quot;监控退出，停止了...&quot;)
+			return
+		default:
+			fmt.Println(name,&quot;goroutine监控中...&quot;)
+			time.Sleep(2*time.Second)
+		}
+	}
+}
 </code></pre>
 
               
@@ -333,7 +400,7 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">标签</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/kubernetes/">kubernetes</a>
+  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/golang/">golang</a>
 
                   </div>
                 
@@ -346,7 +413,7 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/" data-tooltip="golang控制goroutine的几种方式比较">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -354,7 +421,7 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2013/10/chinese-test/" data-tooltip="中文測試">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/" data-tooltip="k8s培训准备工作">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -372,19 +439,19 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -432,7 +499,7 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/" data-tooltip="golang控制goroutine的几种方式比较">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -440,7 +507,7 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2013/10/chinese-test/" data-tooltip="中文測試">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/" data-tooltip="k8s培训准备工作">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -458,19 +525,19 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -500,19 +567,19 @@ mv _output/local/bin/linux/amd64/oc  /usr/local/bin
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fk8s%25E5%259F%25B9%25E8%25AE%25AD%25E5%2587%2586%25E5%25A4%2587%25E5%25B7%25A5%25E4%25BD%259C%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fgolang%25E6%258E%25A7%25E5%2588%25B6goroutine%25E7%259A%2584%25E5%2587%25A0%25E7%25A7%258D%25E6%2596%25B9%25E5%25BC%258F%25E6%25AF%2594%25E8%25BE%2583%2F">
           <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fk8s%25E5%259F%25B9%25E8%25AE%25AD%25E5%2587%2586%25E5%25A4%2587%25E5%25B7%25A5%25E4%25BD%259C%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fgolang%25E6%258E%25A7%25E5%2588%25B6goroutine%25E7%259A%2584%25E5%2587%25A0%25E7%25A7%258D%25E6%2596%25B9%25E5%25BC%258F%25E6%25AF%2594%25E8%25BE%2583%2F">
           <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fk8s%25E5%259F%25B9%25E8%25AE%25AD%25E5%2587%2586%25E5%25A4%2587%25E5%25B7%25A5%25E4%25BD%259C%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fgolang%25E6%258E%25A7%25E5%2588%25B6goroutine%25E7%259A%2584%25E5%2587%25A0%25E7%25A7%258D%25E6%2596%25B9%25E5%25BC%258F%25E6%25AF%2594%25E8%25BE%2583%2F">
           <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
         </a>
       </li>
@@ -674,9 +741,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/08\/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C\/';
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/08\/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83\/';
           
-            this.page.identifier = '\/2018\/08\/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C\/'
+            this.page.identifier = '\/2018\/08\/golang%E6%8E%A7%E5%88%B6goroutine%E7%9A%84%E5%87%A0%E7%A7%8D%E6%96%B9%E5%BC%8F%E6%AF%94%E8%BE%83\/'
           
         };
         (function() {
