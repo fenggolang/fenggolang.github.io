@@ -11,24 +11,6 @@
     
     
     <item>
-      <title>Features</title>
-      <link>https://fenggolang.github.io/categories/features/</link>
-      <pubDate>Wed, 02 Oct 2013 00:00:00 +0000</pubDate>
-      
-      <guid>https://fenggolang.github.io/categories/features/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>K8s</title>
-      <link>https://fenggolang.github.io/categories/k8s/</link>
-      <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
-      
-      <guid>https://fenggolang.github.io/categories/k8s/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Paas</title>
       <link>https://fenggolang.github.io/categories/paas/</link>
       <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
@@ -40,18 +22,18 @@
     <item>
       <title>Programming</title>
       <link>https://fenggolang.github.io/categories/programming/</link>
-      <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
       
       <guid>https://fenggolang.github.io/categories/programming/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Tranquilpeak</title>
-      <link>https://fenggolang.github.io/categories/tranquilpeak/</link>
-      <pubDate>Wed, 02 Oct 2013 00:00:00 +0000</pubDate>
+      <title>大牛</title>
+      <link>https://fenggolang.github.io/categories/%E5%A4%A7%E7%89%9B/</link>
+      <pubDate>Tue, 07 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://fenggolang.github.io/categories/tranquilpeak/</guid>
+      <guid>https://fenggolang.github.io/categories/%E5%A4%A7%E7%89%9B/</guid>
       <description></description>
     </item>
     

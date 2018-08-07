@@ -12,12 +12,14 @@
     
     
     <item>
-      <title>k8s培训准备工作</title>
-      <link>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</link>
+      <title>kubernetes源代码阅读之环境搭建</title>
+      <link>https://fenggolang.github.io/2018/08/kubernetes%E6%BA%90%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</link>
       <pubDate>Mon, 06 Aug 2018 00:00:00 +0000</pubDate>
       
-      <guid>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</guid>
-      <description>准备工作 (一): 相关工具 git、make、goland  (二): 运行环境 linux运行环境 # 1. 安装go sdk(下载解压添加环境变量即可,注意k8s v1.9.1对应的go sdk version也是1.9.1) [wpc@centos7 ~]$ wget https://dl.google.com/go/go1.9.1.linux-amd64.tar.gz [wpc@centos7 ~]$ sudo tar zxvf go1.9.1.linux-amd64.tar.gz -C /usr/local/ [wpc@centos7 ~]$ sudo vim /etc/profile export GOROOT=/usr/local/go export PATH=$GOROOT/bin:$PATH [wpc@centos7 ~]$ source /etc/profile [wpc@centos7 ~]$ go version go version go1.9.1 linux/amd64 [wpc@centos7 ~]$ # 2. 下载编译k8s源码 [wpc@centos7 ~]$ sudo yum install git gcc gcc-c++ -y ## 方式一(官方)： $ go get -d k8s.io/kubernetes $ cd $GOPATH/src/k8s.</description>
+      <guid>https://fenggolang.github.io/2018/08/kubernetes%E6%BA%90%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</guid>
+      <description>&lt;p&gt;要阅读kubernetes源代码首先得在本机搭建好环境，注意，只能在linux、MacOS下，不能在windows下(因为kubernetes源代码中含软连接，这在windows下无法识别)&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
     </item>
     
   </channel>

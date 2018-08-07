@@ -3,6 +3,16 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./</loc>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://fenggolang.github.io/2018/08/%E8%B0%88%E8%B0%88golang%E4%B8%AD%E7%9A%84interface/</loc>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://fenggolang.github.io/about/</loc>
     <lastmod>2018-08-06T21:13:31+08:00</lastmod>
   </url>
@@ -13,13 +23,8 @@
   </url>
   
   <url>
-    <loc>https://fenggolang.github.io/2018/08/k8s%E5%9F%B9%E8%AE%AD%E5%87%86%E5%A4%87%E5%B7%A5%E4%BD%9C/</loc>
+    <loc>https://fenggolang.github.io/2018/08/kubernetes%E6%BA%90%E4%BB%A3%E7%A0%81%E9%98%85%E8%AF%BB%E4%B9%8B%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
     <lastmod>2018-08-06T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://fenggolang.github.io/2013/10/chinese-test/</loc>
-    <lastmod>2013-10-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -33,32 +38,14 @@
   </url>
   
   <url>
-    <loc>https://fenggolang.github.io/tags/chinese/</loc>
-    <lastmod>2013-10-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://fenggolang.github.io/categories/features/</loc>
-    <lastmod>2013-10-02T00:00:00+00:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>https://fenggolang.github.io/tags/golang/</loc>
-    <lastmod>2018-08-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://fenggolang.github.io/</loc>
-    <lastmod>2018-08-06T21:13:31+08:00</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>https://fenggolang.github.io/categories/k8s/</loc>
-    <lastmod>2018-08-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -76,25 +63,31 @@
   
   <url>
     <loc>https://fenggolang.github.io/post/</loc>
-    <lastmod>2018-08-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://fenggolang.github.io/categories/programming/</loc>
-    <lastmod>2018-08-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://fenggolang.github.io/tags/</loc>
-    <lastmod>2013-10-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>https://fenggolang.github.io/categories/tranquilpeak/</loc>
-    <lastmod>2013-10-02T00:00:00+00:00</lastmod>
+    <loc>https://fenggolang.github.io/categories/%E5%A4%A7%E7%89%9B/</loc>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://fenggolang.github.io/tags/%E9%93%BE%E6%8E%A5/</loc>
+    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
