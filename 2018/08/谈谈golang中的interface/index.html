@@ -284,6 +284,87 @@ Go不是一种典型的OO语言，它在语法上不支持类和继承的概念�
 
 <hr />
 
+<h4 id="为何要接口">为何要接口</h4>
+
+<p>在Gopher China上，有大神给出了如下三点理由:
+- writing generic algorithm (泛型编程)
+- hiding implementation detail (隐藏具体实现)
+- providing interception points　(提供拦截点)
+1. 严格的说，在Golang中并不支持泛型编程，但是使用interface我们可以实现泛型编程</p>
+
+<pre><code class="language-go">   package main
+
+   import (
+   	&quot;fmt&quot;
+   	&quot;sort&quot;
+   )
+
+   type Person struct {
+   	Name string
+   	Age  int
+   }
+
+   func (p Person) String() string {
+   	return fmt.Sprintf(&quot;%s: %d&quot;, p.Name, p.Age)
+   }
+
+   // ByAge实现sort.Interface 为[]Person里面的age字段
+   type ByAge []Person //自定义
+
+   // 下面三个方法是实现sort.Interface里面的方法签名
+   func (a ByAge) Len() int {
+   	return len(a)
+   }
+   func (a ByAge) Swap(i, j int) {
+   	a[i], a[j] = a[j], a[i]
+   }
+   func (a ByAge) Less(i, j int) bool {
+   	return a[i].Age &lt; a[j].Age
+   }
+
+   func main() {
+   	people := []Person{
+   		{&quot;Bob&quot;, 31},
+   		{&quot;John&quot;, 42},
+   		{&quot;Michael&quot;, 17},
+   		{&quot;Jenny&quot;, 26},
+   	}
+
+   	fmt.Println(people)
+   	sort.Sort(ByAge(people))
+   	fmt.Println(people)
+   }
+
+   // output:
+   // [Bob: 31 John: 42 Michael: 17 Jenny: 26]
+   // [Michael: 17 Jenny: 26 Bob: 31 John: 42]
+</code></pre>
+
+<p>​</p>
+
+<ol>
+<li>隐藏具体实现</li>
+</ol>
+
+<p>隐藏具体实现，这个很好理解。比如我设计一个函数给你返回一个 interface，那么你只能通过 interface 里面的方法来做一些操作，但是内部的具体实现是完全不知道的。</p>
+
+<ol>
+<li>提供拦截点</li>
+</ol>
+
+<hr />
+
+<h4 id="interface源码分析">interface源码分析</h4>
+
+<p>​   根据interface是否包含有method方法签名,底层实现上用了２种struct结构体表示:</p>
+
+<ul>
+<li>eface: 不含method的interface结构,或者叫empty interface;</li>
+<li>iface: 含method的interface结构。</li>
+</ul>
+
+<hr />
+
 <h4 id="示例如下">示例如下</h4>
 
 <h5 id="不使用接口">不使用接口</h5>
