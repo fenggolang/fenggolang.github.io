@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/</loc>
+    <lastmod>2018-08-11T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./</loc>
     <lastmod>2018-08-07T00:00:00+00:00</lastmod>
   </url>
@@ -45,7 +50,7 @@
   
   <url>
     <loc>https://fenggolang.github.io/</loc>
-    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -56,14 +61,20 @@
   </url>
   
   <url>
+    <loc>https://fenggolang.github.io/tags/openshift/</loc>
+    <lastmod>2018-08-11T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://fenggolang.github.io/categories/paas/</loc>
-    <lastmod>2018-08-06T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://fenggolang.github.io/post/</loc>
-    <lastmod>2018-08-07T00:00:00+00:00</lastmod>
+    <lastmod>2018-08-11T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

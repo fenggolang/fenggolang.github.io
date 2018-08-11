@@ -1,6 +1,8 @@
 
 
   
+    
+  
 
 
   
@@ -20,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>About</title>
+    <title>ansible部署openshift集群</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
@@ -28,15 +30,18 @@
     
 
     
-    <meta name="description" content="">
-    <meta property="og:description" content="">
+    <meta name="description" content="ansible安装部署openshift集群,prometheus,grafana,logging(elasticsearch,fluentd,kibana)
+">
+    <meta property="og:description" content="ansible安装部署openshift集群,prometheus,grafana,logging(elasticsearch,fluentd,kibana)
+">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="About">
-    <meta property="og:url" content="/about/">
+    <meta property="og:title" content="ansible部署openshift集群">
+    <meta property="og:url" content="/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="">
+    <meta name="twitter:description" content="ansible安装部署openshift集群,prometheus,grafana,logging(elasticsearch,fluentd,kibana)
+">
     
     
 
@@ -71,7 +76,7 @@
 
   <body>
     <div id="blog">
-      <header id="header" data-behavior="1">
+      <header id="header" data-behavior="4">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
     <a class="header-title-link" href="https://fenggolang.github.io/">Hugo tranquilpeak theme</a>
@@ -91,7 +96,7 @@
   
 </header>
 
-      <nav id="sidebar" data-behavior="1">
+      <nav id="sidebar" data-behavior="4">
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
@@ -201,7 +206,7 @@
 
       
 
-      <div id="main" data-behavior="1"
+      <div id="main" data-behavior="4"
         class="
                hasCoverMetaIn
                ">
@@ -211,31 +216,239 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      About
+      ansible部署openshift集群
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-08-06T21:13:31&#43;08:00">
+      <time itemprop="datePublished" datetime="2018-08-11T00:00:00Z">
         
-  八月 6, 2018
+  八月 11, 2018
 
       </time>
     
     
+  
+  
+    <span>发布在</span>
+    
+      <a class="category-link" href="https://fenggolang.github.io/categories/paas">paas</a>
+    
+  
+
   </div>
 
 </div>
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              
+              <p>ansible安装部署openshift集群,prometheus,grafana,logging(elasticsearch,fluentd,kibana)
+</p>
+
+<h4 id="ansible部署openshift集群">ansible部署openshift集群</h4>
+
+<ol>
+<li>安装ansible</li>
+</ol>
+
+<pre><code class="language-bash">sudo wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo
+sudo wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo
+sudo yum clean all &amp;&amp; yum makecache
+sudo yum install ansible-2.6.2 pyOpenSSL python-lxml -y
+sudo mv /etc/ansible/hosts /etc/ansible/hosts.bak
+</code></pre>
+
+<ol>
+<li>宿主机<strong>开启</strong>selinux</li>
+</ol>
+
+<pre><code class="language-bash">[root@master-12-79 ~]# getenforce 
+Enforcing
+</code></pre>
+
+<ol>
+<li>添加普通用户</li>
+</ol>
+
+<pre><code class="language-bash">useradd m8 &amp;&amp; echo &quot;m8&quot; | passwd --stdin m8
+vim /etc/sudoers
+m8      ALL=(ALL) NOPASSWD:     ALL
+</code></pre>
+
+<ol>
+<li>安装ansible</li>
+</ol>
+
+<pre><code class="language-bash"># 选择一台机器作为ansible节点，下载安装包
+[m8@ansible m8cloudv4.10-openshift3.10]$ pwd
+/m8/m8cloudv4.10-openshift3.10
+[m8@ansible m8cloudv4.10-openshift3.10]$ wget https://github.com/openshift/openshift-ansible/archive/openshift-ansible-3.10.27-2.tar.gz
+[m8@ansible m8cloudv4.10-openshift3.10]$ tar zxvf openshift-ansible-3.10.27-2.tar.gz
+[m8@ansible m8cloudv4.10-openshift3.10]$ ln -s openshift-ansible-openshift-ansible-3.10.27-2 openshift-3.10
+
+# 修改ansible所在机器的/etc/hosts文件
+[m8@ansible openshift-3.10]$ sudo cat /etc/hosts
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+172.17.12.79 master-12-79
+172.17.12.80 master-12-80
+172.17.12.81 node-12-81 oc-console.oc310.com
+172.17.12.83 infra-12-83
+172.17.12.78 ceph-admin-12-78
+172.17.12.82 ceph-node1-12-82
+[m8@ansible openshift-3.10]$ 
+# 下发
+ansible nodes -m copy -a 'src=/etc/hosts dest=/etc/hosts'
+</code></pre>
+
+<ol>
+<li>配置ansible hosts文件</li>
+</ol>
+
+<pre><code class="language-bash"># 修改openshift repo
+[m8@host-172-18-2-21 templates]$ pwd
+/m8/openshift/openshift3.10/roles/openshift_repos/templates
+[m8@ansible openshift-3.10]$ vim roles/openshift_repos/templates/CentOS-OpenShift-Origin.repo.j2
+baseurl=https://mirrors.aliyun.com/centos/7/paas/x86_64/openshift-origin310/
+</code></pre>
+
+<pre><code class="language-bash">#　修改ansible hosts文件
+# ansible hosts文件定义的变量在roles/openshift_facts/defaults/main.yml文件中定义
+# 示例 openshift_node_group_name
+# [m8@ansible openshift-3.10]$ vim inventory/hosts.example 
+# https://docs.okd.io/latest/install/configuring_inventory_file.html
+# 配置ansible hosts文件
+[OSEv3:children]
+masters
+nodes
+etcd
+lb
+
+[OSEv3:vars]
+ansible_connection=ssh
+ansible_ssh_user=m8
+ansible_ssh_pass=m8
+ansible_become=yes
+
+yum_url=https://mirrors.aliyun.com
+
+openshift_deployment_type=origin
+openshift_release=v3.10
+
+openshift_clock_enabled=true
+openshift_disable_check=memory_availability,disk_availability,docker_storage,docker_storage_driver,docker_image_availability,package_version,package_availability,package_update
+
+os_firewall_use_firewalld=True
+
+openshift_docker_selinux_enabled=False
+
+openshift_master_api_port=443
+openshift_master_console_port=443
+
+openshift_master_cluster_method=native
+openshift_master_cluster_hostname=oc-console.oc310.com
+openshift_master_cluster_public_hostname=oc-console.oc310.com
+
+osm_controller_lease_ttl=30
+
+openshift_master_default_subdomain=oc310.com
+
+os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
+openshift_master_htpasswd_users={'m8admin': '$apr1$h365yuto$6nWBXOIjWTbP9MOI4aBII0', 'm8user': '$apr1$1us0qxca$6ZeGwn9DA4te3TBzwPl/m.'}
+
+#openshift_node_groups=[{'name': 'node-config-master' 'labels': ['node-role.kubernetes.io/master=true']}, {'name': 'node-config-infra', 'labels': ['node-role.kubernetes.io/infra=true',]}, {'name': 'node-config-compute', 'labels': ['node-role.kubernetes.io/compute=true'], 'edits': [{ 'key': 'kubeletArguments.pods-per-core','value': ['20']}]}]
+
+[masters]
+master-12-79 hostname=master-12-79 
+master-12-80 hostname=master-12-80
+
+[etcd]
+master-12-79
+master-12-80
+infra-12-83 hostname=infra-12-83
+
+[lb]
+node-12-81 hostname=node-12-81
+
+[nodes]
+# 3.10的console也是一个pod，所以master节点必须可被调度。
+master-12-79 openshift_schedulable=true openshift_node_group_name=&quot;node-config-master&quot;
+master-12-80 openshift_schedulable=true openshift_node_group_name=&quot;node-config-master&quot;
+node-12-81 openshift_node_group_name=&quot;node-config-compute&quot;
+infra-12-83 openshift_node_group_name=&quot;node-config-infra&quot;
+</code></pre>
+
+<ol>
+<li>检查安装依赖等</li>
+</ol>
+
+<pre><code class="language-bash"># 检查
+ansible-playbook playbooks/prerequisites.yml -vvv
+</code></pre>
+
+<ol>
+<li>安装openshift</li>
+</ol>
+
+<pre><code class="language-bash"># 安装
+ansible-playbook playbooks/deploy_cluster.yml
+</code></pre>
+
+<ol>
+<li>创建集群管理员</li>
+</ol>
+
+<pre><code class="language-bash"># 创建集群管理员用户(如果在安装的时候ansible hosts指定了就不用再用htpasswd创建)
+# htpasswd -c /etc/origin/master/htpasswd m8admin m8admin
+oc adm policy add-cluster-role-to-user cluster-admin m8admin
+# 取消集群管理员角色
+oc adm policy remove-cluster-role-from-user cluster-admin m8admin
+</code></pre>
+
+<h4 id="ansible部署prometheus">ansible部署prometheus</h4>
+
+<pre><code class="language-bash"># 参考：
+https://docs.okd.io/3.10/install/running_install.html
+# 安装
+ansible-playbook playbooks/openshift-prometheus/config.yml
+</code></pre>
+
+<h4 id="ansible部署grafana">ansible部署grafana</h4>
+
+<pre><code class="language-bash"># 安装
+ansible-playbook playbooks/openshift-grafana/config.yml
+</code></pre>
+
+<h4 id="ansible部署logging-elk">ansible部署logging(elk)</h4>
+
+<pre><code class="language-bash"># 安装
+ansible-playbook playbooks/openshift-logging/config.yml
+</code></pre>
+
+<hr />
+
+<h4 id="fqa">FQA</h4>
+
+<h5 id="卸载openshift集群">卸载openshift集群</h5>
+
+<pre><code class="language-bash">ansible-playbook playbooks/adhoc/uninstall.yml
+</code></pre>
               
             </div>
           </div>
           <div id="post-footer" class="post-footer main-content-wrap">
             
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">标签</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/openshift/">openshift</a>
+
+                  </div>
+                
               
             
             
@@ -253,7 +466,7 @@
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--disabled">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./" data-tooltip="大牛博客,友情链接.">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -271,19 +484,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -323,7 +536,7 @@
 </footer>
 
       </div>
-      <div id="bottom-bar" class="post-bottom-bar" data-behavior="1">
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
         
   <div class="post-actions-wrap">
       <nav >
@@ -339,7 +552,7 @@
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--disabled">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./" data-tooltip="大牛博客,友情链接.">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -357,19 +570,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/about/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -394,24 +607,24 @@
 
 
       </div>
-      <div id="share-options-bar" class="share-options-bar" data-behavior="1">
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
   <i id="btn-close-shareoptions" class="fa fa-close"></i>
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2Fabout%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fansible%25E9%2583%25A8%25E7%25BD%25B2openshift%25E9%259B%2586%25E7%25BE%25A4%2F">
           <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2Fabout%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fansible%25E9%2583%25A8%25E7%25BD%25B2openshift%25E9%259B%2586%25E7%25BE%25A4%2F">
           <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2Fabout%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fansible%25E9%2583%25A8%25E7%25BD%25B2openshift%25E9%259B%2586%25E7%25BE%25A4%2F">
           <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
         </a>
       </li>
@@ -623,9 +836,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/fenggolang.github.io\/about\/';
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/08\/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4\/';
           
-            this.page.identifier = '\/about\/'
+            this.page.identifier = '\/2018\/08\/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4\/'
           
         };
         (function() {
