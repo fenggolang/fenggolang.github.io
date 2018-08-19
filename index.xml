@@ -6,10 +6,21 @@
     <description>Recent content on Hugo tranquilpeak theme</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 18 Aug 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 19 Aug 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://fenggolang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>docker核心技术以及实现原理</title>
+      <link>https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</link>
+      <pubDate>Sun, 19 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/</guid>
+      <description>&lt;p&gt;设计docker核心技术以及底层实现原理，比如命名空间、CGroups,存储驱动，容器网络&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>deepin linux共享文件给windows</title>
