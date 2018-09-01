@@ -1,5 +1,9 @@
 
 
+  
+    
+  
+
 
   
 
@@ -18,25 +22,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>Os</title>
+    <title>golang项目常用框架技术选型</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
     <link rel="icon" href="https://fenggolang.github.io/favicon.png">
     
-      <link rel="alternate" type="application/rss+xml" title="RSS" href="https://fenggolang.github.io/categories/os/index.xml">
-    
 
     
-    <meta name="description" content="Hugo tranquilpeak theme demo">
-    <meta property="og:description" content="Hugo tranquilpeak theme demo">
+    <meta name="description" content="做一个golang项目，免不了需要选型框架，下面整理了一份常用的技术选型框架。
+">
+    <meta property="og:description" content="做一个golang项目，免不了需要选型框架，下面整理了一份常用的技术选型框架。
+">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="Os">
-    <meta property="og:url" content="/categories/os/">
+    <meta property="og:title" content="golang项目常用框架技术选型">
+    <meta property="og:url" content="/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="Hugo tranquilpeak theme demo">
+    <meta name="twitter:description" content="做一个golang项目，免不了需要选型框架，下面整理了一份常用的技术选型框架。
+">
     
     
 
@@ -71,7 +76,7 @@
 
   <body>
     <div id="blog">
-      <header id="header" data-behavior="1">
+      <header id="header" data-behavior="4">
   <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
   <div class="header-title">
     <a class="header-title-link" href="https://fenggolang.github.io/">Hugo tranquilpeak theme</a>
@@ -91,7 +96,7 @@
   
 </header>
 
-      <nav id="sidebar" data-behavior="1">
+      <nav id="sidebar" data-behavior="4">
   <div class="sidebar-container">
     
       <div class="sidebar-profile">
@@ -200,44 +205,26 @@
 </nav>
 
       
-        
 
-      
-      <div id="main" data-behavior="1"
+      <div id="main" data-behavior="4"
         class="
                hasCoverMetaIn
                ">
-        
-          <section class="postShorten-group main-content-wrap">
-            
-            
-              
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
   
-    
-      
-        
-      
-    
+    <h1 class="post-title" itemprop="headline">
+      golang项目常用框架技术选型
+    </h1>
   
-
-
   
-
-<article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
-  <div class="postShorten-wrap">
-    
-    <div class="postShorten-header">
-      <h1 class="postShorten-title" itemprop="headline">
-        <a class="link-unstyled" href="https://fenggolang.github.io/2018/08/deepin-linux%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E7%BB%99windows/">
-          deepin linux共享文件给windows
-        </a>
-      </h1>
-      
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-08-18T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-09-01T00:00:00Z">
         
-  八月 18, 2018
+  九月 1, 2018
 
       </time>
     
@@ -246,31 +233,173 @@
   
     <span>发布在</span>
     
-      <a class="category-link" href="https://fenggolang.github.io/categories/os">os</a>
+      <a class="category-link" href="https://fenggolang.github.io/categories/programming">programming</a>
     
   
 
   </div>
 
-    </div>
-    <div class="postShorten-excerpt" itemprop="articleBody">
-      <p>deepin linux下使用samba服务共享文件给windows访问</p>
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <p>做一个golang项目，免不了需要选型框架，下面整理了一份常用的技术选型框架。
+</p>
 
-<p></p>
-      <p>
-        <a href="https://fenggolang.github.io/2018/08/deepin-linux%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E7%BB%99windows/" class="postShorten-excerpt_link link">阅读全文</a>
+<h4 id="go-rest-api文档管理">Go Rest API文档管理</h4>
+
+<p>gin-swagger：通过注释自动生成swagger api文档</p>
+
+<h4 id="go-orm对象关系映射框架">Go ORM对象关系映射框架</h4>
+
+<p>gorm：Golang梦幻般的ORM库旨在让开发人员更加友好</p>
+
+<h4 id="go-命令行框架工具集">Go 命令行框架工具集</h4>
+
+<p>cobra简介：A Commander for modern Go CLI interactions(现代Go CLI交互的命令行工具集)</p>
+
+<p>使用Cobra的知名项目如下：</p>
+
+<ul>
+<li><a href="http://kubernetes.io/">Kubernetes</a></li>
+<li><a href="http://gohugo.io/">Hugo</a></li>
+<li><a href="https://github.com/coreos/rkt">rkt</a></li>
+<li><a href="https://github.com/coreos/etcd">etcd</a></li>
+<li><a href="https://github.com/moby/moby">Moby (former Docker)</a></li>
+<li><a href="https://github.com/docker/distribution">Docker (distribution)</a></li>
+<li><a href="https://www.openshift.com/">OpenShift</a></li>
+<li><a href="https://github.com/derekparker/delve">Delve</a></li>
+<li><a href="http://www.gopherjs.org/">GopherJS</a></li>
+<li><a href="http://www.cockroachlabs.com/">CockroachDB</a></li>
+<li><a href="http://www.blevesearch.com/">Bleve</a></li>
+<li><a href="http://www.projectatomic.io/">ProjectAtomic (enterprise)</a></li>
+<li><a href="https://github.com/giantswarm/gsctl">Giant Swarm&rsquo;s gsctl</a></li>
+<li><a href="https://github.com/nanobox-io/nanobox">Nanobox</a>/<a href="https://github.com/nanopack">Nanopack</a></li>
+<li><a href="http://rclone.org/">rclone</a></li>
+<li><a href="https://github.com/bogem/nehm">nehm</a></li>
+<li><a href="https://github.com/alibaba/pouch">Pouch</a></li>
+</ul>
+
+<h4 id="go应用程序完整配置解决方案-viper">Go应用程序完整配置解决方案:Viper</h4>
+
+<p>Viper是Go应用程序的完整配置解决方案。它旨在在应用程序中工作，并可以处理所有类型的配置需求和格式。它支持：</p>
+
+<ul>
+<li>设置默认值</li>
+<li>从JSON，TOML，YAML，HCL和Java属性配置文件中读取</li>
+<li>实时观看和重新读取配置文件（可选）</li>
+<li>从环境变量中读取</li>
+<li>从远程配置系统（etcd或Consul）读取，并观察变化</li>
+<li>从命令行标志读取</li>
+<li>从缓冲区读取</li>
+<li>设置显式值</li>
+</ul>
+
+<p>Viper可以被认为是所有应用程序配置需求的注册表。</p>
+
+<p>许多Go项目构建都是用Viper作为配置解决方案，比如:</p>
+
+<ul>
+<li>Hugo</li>
+<li>Docker Notary</li>
+</ul>
+
+<p><a href="https://github.com/spf13/viper">viper的github地址</a></p>
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+                
+                
+                  <div class="post-footer-tags">
+                    <span class="text-color-light text-small">标签</span><br/>
+                    
+  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/golang/">golang</a>
+
+                  </div>
+                
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" data-tooltip="docker核心技术以及实现原理">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
         
-      </p>
-    </div>
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
   </div>
-  
-</article>
+
 
             
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
             
-
-          </section>
-        
+          </div>
+        </article>
         <footer id="footer" class="main-content-wrap">
   <span class="copyrights">
     &copy; 2018 wang pengcheng. All Rights Reserved
@@ -278,6 +407,102 @@
 </footer>
 
       </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+          
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                  <i class="fa fa-angle-left"></i>
+                  <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/" data-tooltip="docker核心技术以及实现原理">
+              
+                  <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
+                  <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+          
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E9%25A1%25B9%25E7%259B%25AE%25E5%25B8%25B8%25E7%2594%25A8%25E6%25A1%2586%25E6%259E%25B6%25E6%258A%2580%25E6%259C%25AF%25E9%2580%2589%25E5%259E%258B%2F">
+          <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E9%25A1%25B9%25E7%259B%25AE%25E5%25B8%25B8%25E7%2594%25A8%25E6%25A1%2586%25E6%259E%25B6%25E6%258A%2580%25E6%259C%25AF%25E9%2580%2589%25E5%259E%258B%2F">
+          <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E9%25A1%25B9%25E7%259B%25AE%25E5%25B8%25B8%25E7%2594%25A8%25E6%25A1%2586%25E6%259E%25B6%25E6%258A%2580%25E6%259C%25AF%25E9%2580%2589%25E5%259E%258B%2F">
+          <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
     </div>
     
     <div id="about">
@@ -533,6 +758,32 @@ $(document).ready(function() {
 });
 </script>
 
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/09\/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B\/';
+          
+            this.page.identifier = '\/2018\/09\/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'hugo-tranquilpeak-theme';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
 
 
 
