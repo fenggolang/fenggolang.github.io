@@ -17,7 +17,8 @@
       <pubDate>Sat, 15 Sep 2018 00:00:00 +0000</pubDate>
       
       <guid>https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/</guid>
-      <description>&lt;p&gt;golang中的类型别名是go1.9新引入的,和原类型完全一样;类型再定义的类型和原类型不一样。&lt;/p&gt;
+      <description>&lt;p&gt;golang类型别名的设计初衷是为了解决代码重构时，类型在包(package)之间转移时产生的问题,类型别名是go1.9新引入的,和原类型完全一样;
+golang类型定义(或者应该叫类型再定义)的类型和原类型不一样。类型定义一般用在为一个类型添加一个方法使用?也就是方法前面的接受者?&lt;/p&gt;
 
 &lt;p&gt;&lt;/p&gt;</description>
     </item>
