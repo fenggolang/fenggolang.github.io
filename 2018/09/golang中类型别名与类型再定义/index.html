@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>大牛博客,友情链接.</title>
+    <title>golang中类型别名与类型再定义</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
@@ -30,19 +30,19 @@
     
 
     
-    <meta name="description" content="记录网上大牛的博客地址
+    <meta name="description" content="golang中的类型别名是go1.9新引入的,和原类型完全一样;类型再定义的类型和原类型不一样。
 
 ">
-    <meta property="og:description" content="记录网上大牛的博客地址
+    <meta property="og:description" content="golang中的类型别名是go1.9新引入的,和原类型完全一样;类型再定义的类型和原类型不一样。
 
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="大牛博客,友情链接.">
-    <meta property="og:url" content="/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+    <meta property="og:title" content="golang中类型别名与类型再定义">
+    <meta property="og:url" content="/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="记录网上大牛的博客地址
+    <meta name="twitter:description" content="golang中的类型别名是go1.9新引入的,和原类型完全一样;类型再定义的类型和原类型不一样。
 
 ">
     
@@ -219,15 +219,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      大牛博客,友情链接.
+      golang中类型别名与类型再定义
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-08-07T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-09-15T00:00:00Z">
         
-  八月 7, 2018
+  九月 15, 2018
 
       </time>
     
@@ -236,7 +236,7 @@
   
     <span>发布在</span>
     
-      <a class="category-link" href="https://fenggolang.github.io/categories/%e5%a4%a7%e7%89%9b">大牛</a>
+      <a class="category-link" href="https://fenggolang.github.io/categories/programming">programming</a>
     
   
 
@@ -246,17 +246,95 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>记录网上大牛的博客地址</p>
+              <p>golang中的类型别名是go1.9新引入的,和原类型完全一样;类型再定义的类型和原类型不一样。</p>
 
 <p></p>
 
-<p><a href="https://jimmysong.io/">宋净超-kubernetes布道师</a></p>
+<h4 id="类型别名-go1-9的新特性">类型别名(go1.9的新特性)</h4>
 
-<p><a href="http://www.ruanyifeng.com/blog/developer/">阮一峰-专注于网络技术、前端</a></p>
+<p>​   类型别名和原类型完全一样，只不过是另一种叫法而已。</p>
 
-<p><a href="http://www.d-kai.me/">golang 算法相关</a></p>
+<p>​   我们可以用关键字type声明自定义的各种类型。当然了，这些类型必须在Go语言基本类型和高级类型的范畴之内。在它们当中，有一种被叫做<strong>别名类型</strong>的类型，如下声明它：</p>
 
-<p><a href="https://yuerblog.cc/">鱼儿的博客-golang-慕课网</a></p>
+<pre><code class="language-go">// 为类型string取一个别名
+// 这条声明语句表示，MyString是string类型的别名类型。顾名思义，别名类型与其源类型的区别恐怕只是在名称上，它们是完全相同的。
+// 源类型与别名类型是一对概念，是两个对立的称呼。别名类型主要是为了代码重构而存在的，
+// https://github.com/golang/proposal/blob/master/design/18130-type-alias.md
+type MyString = string
+</code></pre>
+
+<p>​   Go1.9中内建的基本类型中就存在两个别名类型</p>
+
+<ul>
+<li>byte是unint8的别名类型</li>
+<li>rune是int32的别名类型</li>
+</ul>
+
+<pre><code class="language-go">type byte = uint8
+type rune = int32
+</code></pre>
+
+<h4 id="潜在类型-也叫类型再定义">潜在类型(也叫类型再定义)</h4>
+
+<p>​   下面声明一个类型再定义</p>
+
+<pre><code class="language-go">// 类型再定义，注意这里没有等号
+// MyString2和string就是两个不同的类型了，这里的MyString2是一个新的类型，不同于其他任何类型
+// 这种方式也可以被叫做对类型的再定义。我们刚刚把string类型再定义成了另外一个类型MyString2
+// 对于这里的类型再定义来说，string可以被称为MyString2的潜在类型。潜在类型的含义是某个类型在本质上是哪个类型或者是哪个类型的集合
+// 潜在类型相同的不同类型的值是可以进行类型转换的。因此MyString2类型的值与string类型的值可以使用类型转换表达式进行互转。
+// 但是对于集合类的类型[]MyString2与[]string来说这样做却是不合法的，因为[]MyString2与[]string的潜在类型不同，分别是MyString2和string
+// 另外，即使两个类型的潜在类型相同，它们的值之间也不能进行判等或比较，它们的变量之间也不能赋值
+type MyString2 string
+</code></pre>
+
+<h4 id="类型别名声明与类型再定义之间的区别">类型别名声明与类型再定义之间的区别</h4>
+
+<pre><code class="language-go">// 定义类型别名
+// 类型别名和原类型完全一样，可以随意命名，增加代码可读性，拓展外部访问权限
+type newType = oldType
+// 定义新类型
+type newType oldType
+</code></pre>
+
+<p>​   所以类型别名和类型定义最大的区别在于：类型别名和原类型是相同的，而类型定义和原类型是不同的两个类型。</p>
+
+<p>​   还有一个重要的区别在于类型定义的类型的方法集和原始类型的方法集没有任何关系，而类型别名和原始类型的方法集是一样的</p>
+
+<h4 id="别名类型在代码重构过程中可以起到哪些作用">别名类型在代码重构过程中可以起到哪些作用</h4>
+
+<pre><code class="language-go">// 别名在代码重构中非常有用，例如以前使用的是p.T这个类型，重构过程中需要把它移到p1.T1,这时只需要在p包中定义type T = p1.T1,这样基本之前使用p.T的代码都不用修改
+</code></pre>
+
+<h4 id="类型别名存在的意义">类型别名存在的意义</h4>
+
+<ul>
+<li>名字可以取的更通俗易懂</li>
+<li>需要修改数据类型时，只用改定义的那一处地方</li>
+<li>可以很方便的添加特有方法，以实现某些接口</li>
+</ul>
+
+<p>型别名主要用在：</p>
+
+<ol>
+<li>在大规模的重构项目代码的时候，尤其是将一个类型从一个包移动到另一个包中的时候，有些代码使用新包中的类型，有些代码使用旧包中的类型， 比如context</li>
+<li>允许一个庞大的包分解成内部的几个小包，但是小包中的类型需要集中暴漏在上层的大包中</li>
+</ol>
+
+<p>当然， 你可以为任意的类型定义类型别名，语言规范中没有限制，可以为数组、结构体、指针、函数、接口、Slice、Map、Channel定义别名，甚至你还可以为通过类型定义(type definition)的类型定义别名，更甚者是你可以为别名定义别名。</p>
+
+<p>如果定义的类型别名是<code>exported</code> (首字母大写)的，那么别的包中就可以使用，它和原始类型是否可<code>exported</code>没关系。也就是说，你可以为<code>unexported</code>类型定义一个<code>exported</code>的类型别名，如下面的例子：</p>
+
+<pre><code class="language-go">type t1 struct {
+	S string
+}
+type T2 = t1
+</code></pre>
+
+<h4 id="类型再定义存在的意义">类型再定义存在的意义</h4>
+
+<pre><code class="language-go">
+</code></pre>
               
             </div>
           </div>
@@ -268,7 +346,7 @@
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">标签</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/%E9%93%BE%E6%8E%A5/">链接</a>
+  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/golang/">golang</a>
 
                   </div>
                 
@@ -281,7 +359,7 @@
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/" data-tooltip="ansible部署openshift集群">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -289,7 +367,7 @@
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/%E8%B0%88%E8%B0%88golang%E4%B8%AD%E7%9A%84interface/" data-tooltip="谈谈golang中的interface">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" data-tooltip="golang项目常用框架技术选型">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -307,19 +385,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -367,7 +445,7 @@
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/ansible%E9%83%A8%E7%BD%B2openshift%E9%9B%86%E7%BE%A4/" data-tooltip="ansible部署openshift集群">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -375,7 +453,7 @@
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/%E8%B0%88%E8%B0%88golang%E4%B8%AD%E7%9A%84interface/" data-tooltip="谈谈golang中的interface">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" data-tooltip="golang项目常用框架技术选型">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -393,19 +471,19 @@
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5./">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/09/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -435,19 +513,19 @@
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2F%25E5%25A4%25A7%25E7%2589%259B%25E5%258D%259A%25E5%25AE%25A2%25E5%258F%258B%25E6%2583%2585%25E9%2593%25BE%25E6%258E%25A5.%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E4%25B8%25AD%25E7%25B1%25BB%25E5%259E%258B%25E5%2588%25AB%25E5%2590%258D%25E4%25B8%258E%25E7%25B1%25BB%25E5%259E%258B%25E5%2586%258D%25E5%25AE%259A%25E4%25B9%2589%2F">
           <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2F%25E5%25A4%25A7%25E7%2589%259B%25E5%258D%259A%25E5%25AE%25A2%25E5%258F%258B%25E6%2583%2585%25E9%2593%25BE%25E6%258E%25A5.%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E4%25B8%25AD%25E7%25B1%25BB%25E5%259E%258B%25E5%2588%25AB%25E5%2590%258D%25E4%25B8%258E%25E7%25B1%25BB%25E5%259E%258B%25E5%2586%258D%25E5%25AE%259A%25E4%25B9%2589%2F">
           <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2F%25E5%25A4%25A7%25E7%2589%259B%25E5%258D%259A%25E5%25AE%25A2%25E5%258F%258B%25E6%2583%2585%25E9%2593%25BE%25E6%258E%25A5.%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E4%25B8%25AD%25E7%25B1%25BB%25E5%259E%258B%25E5%2588%25AB%25E5%2590%258D%25E4%25B8%258E%25E7%25B1%25BB%25E5%259E%258B%25E5%2586%258D%25E5%25AE%259A%25E4%25B9%2589%2F">
           <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
         </a>
       </li>
@@ -734,9 +812,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/08\/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5.\/';
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/09\/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89\/';
           
-            this.page.identifier = '\/2018\/08\/%E5%A4%A7%E7%89%9B%E5%8D%9A%E5%AE%A2%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5.\/'
+            this.page.identifier = '\/2018\/09\/golang%E4%B8%AD%E7%B1%BB%E5%9E%8B%E5%88%AB%E5%90%8D%E4%B8%8E%E7%B1%BB%E5%9E%8B%E5%86%8D%E5%AE%9A%E4%B9%89\/'
           
         };
         (function() {
