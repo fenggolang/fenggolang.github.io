@@ -285,6 +285,27 @@
             <hr>
           </div>
         
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="https://fenggolang.github.io/1/01/">
+                <h3 class="media-heading"></h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Jan 1, 0001
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">类型别名(go1.9的新特性) ​ 类型别名和原类型完全一样，只不过是另一种叫法而已。
+​ 我们可以用关键字type声明自定义的各种类型。当然了，这些类型必须在Go语言基本类型和高级类型的范畴之内。在它们当中，有一种被叫做别名类型的类型，如下声明它：
+// 为类型string取一个别名 // 这条声明语句表示，MyString是string类型的别名类型。顾名思义，别名类型与其源类型的区别恐怕只是在名称上，它们是完全相同的。 // 源类型与别名类型是一对概念，是两个对立的称呼。别名类型主要是为了代码重构而存在的， // https://github.com/golang/proposal/blob/master/design/18130-type-alias.md type MyString = string  ​ Go1.9中内建的基本类型中就存在两个别名类型
+ byte是unint8的别名类型 rune是int32的别名类型  type byte = uint8 type rune = int32  潜在类型(也叫类型再定义) ​ 下面声明一个类型再定义
+// 类型再定义，注意这里没有等号 // MyString2和string就是两个不同的类型了，这里的MyString2是一个新的类型，不同于其他任何类型 // 这种方式也可以被叫做对类型的再定义。我们刚刚把string类型再定义成了另外一个类型MyString2 // 对于这里的类型再定义来说，string可以被称为MyString2的潜在类型。潜在类型的含义是某个类型在本质上是哪个类型或者是哪个类型的集合 // 潜在类型相同的不同类型的值是可以进行类型转换的。因此MyString2类型的值与string类型的值可以使用类型转换表达式进行互转。 // 但是对于集合类的类型[]MyString2与[]string来说这样做却是不合法的，因为[]MyString2与[]string的潜在类型不同，分别是MyString2和string // 另外，即使两个类型的潜在类型相同，它们的值之间也不能进行判等或比较，它们的变量之间也不能赋值 type MyString2 string  类型别名声明与类型再定义之间的区别 // 定义类型别名 // 类型别名和原类型完全一样，可以随意命名，增加代码可读性，拓展外部访问权限 type newType = oldType // 定义新类型 type newType oldType  ​ 所以类型别名和类型定义最大的区别在于：类型别名和原类型是相同的，而类型定义和原类型是不同的两个类型。</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
       </div>
     </div>
     <div class="modal-footer">
@@ -292,7 +313,7 @@
          data-message-zero=""
          data-message-one=""
          data-message-other="">
-         8 posts found
+         9 posts found
       </p>
     </div>
   </div>
