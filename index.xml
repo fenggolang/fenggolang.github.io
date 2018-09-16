@@ -6,10 +6,25 @@
     <description>Recent content on Hugo tranquilpeak theme</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Sat, 15 Sep 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 16 Sep 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://fenggolang.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>gorilla/mux注册路由使用详解</title>
+      <link>https://fenggolang.github.io/2018/09/gorilla/mux%E6%B3%A8%E5%86%8C%E8%B7%AF%E7%94%B1%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</link>
+      <pubDate>Sun, 16 Sep 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://fenggolang.github.io/2018/09/gorilla/mux%E6%B3%A8%E5%86%8C%E8%B7%AF%E7%94%B1%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/</guid>
+      <description>&lt;hr /&gt;
+
+&lt;h4 id=&#34;前言&#34;&gt;前言&lt;/h4&gt;
+
+&lt;p&gt;gorilla/mux是一个强大的URL路由器和golang调度程序。它实现了请求路由器和调度程序，用于将传入请求与其各自的处理程序进行匹配。&lt;/p&gt;
+
+&lt;p&gt;&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>golang中类型别名与类型再定义</title>
