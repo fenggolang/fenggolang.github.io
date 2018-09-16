@@ -276,6 +276,10 @@ URL主机，路径和查询值可以包含带有可选正则表达式的变量�
 注册的URL可以构建或“反转”，这有助于维护对资源的引用。
 路由可用作子路由器：仅在父路由匹配时才测试嵌套路由。这对于定义共享公共条件（如主机，路径前缀或其他重复属性）的路由组非常有用。作为奖励，这可以优化请求匹配。</p>
 
+<p>Mux支持向路由器添加middleware,如果找到匹配项，则按照添加的顺序执行，包括其子路由。middleware通常是一小段代码，
+它们接受一个请求，对其执行某些操作，然后将其传递给另一个middleware或最终处理程序handler。<strong>middleware的一些常见
+用例是请求日志记录header操作或ResponseWriter劫持.</strong></p>
+
 <h4 id="初始化变量">初始化变量</h4>
 
 <pre><code class="language-go">// github.com/gorilla/mux
