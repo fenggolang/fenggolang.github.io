@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>docker核心技术以及实现原理</title>
+    <title>golang处理http response碰到的问题和需要注意的点</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
@@ -30,19 +30,37 @@
     
 
     
-    <meta name="description" content="设计docker核心技术以及底层实现原理，比如命名空间、CGroups,存储驱动，容器网络
+    <meta name="description" content="
+
+前言
+
+问题一：ioutil.ReadAll(resp.Body)之后再次读取,还会读到响应体的Body内容吗？
+
+问题二：resp.Body为何需要人为的手动关闭？
 
 ">
-    <meta property="og:description" content="设计docker核心技术以及底层实现原理，比如命名空间、CGroups,存储驱动，容器网络
+    <meta property="og:description" content="
+
+前言
+
+问题一：ioutil.ReadAll(resp.Body)之后再次读取,还会读到响应体的Body内容吗？
+
+问题二：resp.Body为何需要人为的手动关闭？
 
 ">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="docker核心技术以及实现原理">
-    <meta property="og:url" content="/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+    <meta property="og:title" content="golang处理http response碰到的问题和需要注意的点">
+    <meta property="og:url" content="/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="设计docker核心技术以及底层实现原理，比如命名空间、CGroups,存储驱动，容器网络
+    <meta name="twitter:description" content="
+
+前言
+
+问题一：ioutil.ReadAll(resp.Body)之后再次读取,还会读到响应体的Body内容吗？
+
+问题二：resp.Body为何需要人为的手动关闭？
 
 ">
     
@@ -219,15 +237,15 @@
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      docker核心技术以及实现原理
+      golang处理http response碰到的问题和需要注意的点
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-08-19T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-09-22T00:00:00Z">
         
-  八月 19, 2018
+  九月 22, 2018
 
       </time>
     
@@ -236,7 +254,7 @@
   
     <span>发布在</span>
     
-      <a class="category-link" href="https://fenggolang.github.io/categories/paas">paas</a>
+      <a class="category-link" href="https://fenggolang.github.io/categories/programming">programming</a>
     
   
 
@@ -246,130 +264,129 @@
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>设计docker核心技术以及底层实现原理，比如命名空间、CGroups,存储驱动，容器网络</p>
+              <hr />
+
+<h4 id="前言">前言</h4>
+
+<p>问题一：ioutil.ReadAll(resp.Body)之后再次读取,还会读到响应体的Body内容吗？</p>
+
+<p>问题二：resp.Body为何需要人为的手动关闭？</p>
 
 <p></p>
 
-<h4 id="docker核心技术的支撑是什么">docker核心技术的支撑是什么</h4>
+<hr />
 
-<ul>
-<li>namespaces</li>
-<li>cGroups(control groups)</li>
-<li>union filesystem</li>
-</ul>
+<h4 id="ioutil-readall-resp-body-之后再次读取-还会读到响应体的body内容吗">ioutil.ReadAll(resp.Body)之后再次读取,还会读到响应体的Body内容吗？</h4>
 
-<h4 id="docker出现的原因">docker出现的原因</h4>
+<p>​   在处理http response的时候，我们会发现body读取之后想再次读取的时候，发现读不到任何东西，示例代码如下：</p>
 
-<p>​   Docker的出现一定是因为目前的后端在开发和运维阶段确实需要一种虚拟化技术解决开发环境和生产环境一致的问题，通过Docker我们可以将程序运行的环境也纳入到版本控制中，排除因为环境造成不同运行结果的可能。</p>
+<pre><code class="language-go">package main
 
-<h4 id="namespaces">Namespaces</h4>
+import (
+	&quot;net/http&quot;
+	&quot;crypto/tls&quot;
+	&quot;time&quot;
+	&quot;fmt&quot;
+	&quot;io/ioutil&quot;
+	&quot;os&quot;
+)
 
-<p>​   命名空间（namespaces）是 Linux 为我们提供的用于分离进程树、网络接口、挂载点以及进程间通信等资源的方法。Docker就是通过Linux的Namespaces对不同的容器实现了隔离。</p>
+var (
+	URL=&quot;http://www.baidu.com&quot;
+	filePath=&quot;myhttptest.go&quot;
+	tr = &amp;http.Transport{
+		TLSClientConfig:&amp;tls.Config{InsecureSkipVerify:true},
+	}
+	client = &amp;http.Client{
+		Transport:tr,
+		Timeout:10*time.Second,
+	}
+)
+func main() {
+	readHTML(URL)
 
-<h4 id="网络">网络</h4>
+	readFile(filePath)
+}
 
-<pre><code>Docker虽然可以通过命名空间创建一个隔离的网络环境，但是Docker中的服务任然需要与外界相连才能发挥作用，
+// 测试读取网页，2次读取响应体
+func readHTML(url string) {
+	req,_:=http.NewRequest(http.MethodGet,url,nil)
+	resp,err:=client.Do(req)
+	if err!=nil{
+		fmt.Println(&quot;请求失败&quot;,err)
+	}
+	defer resp.Body.Close() // 必须人为手动关闭，
+
+	respBody,_:=ioutil.ReadAll(resp.Body)
+	fmt.Println(&quot;第一次读取响应体respBody:&quot;,string(respBody)) // 返回首页html页面
+	respBody2,_:=ioutil.ReadAll(resp.Body) // 第二次读取,即使不关闭resp.Body也会读取不到数据
+	fmt.Println(&quot;第二次读取响应体respBody:&quot;,string(respBody2)) // 返回空
+}
+
+// 测试读取文件内容，2次读取文件内容
+func readFile(path string) {
+	file,err:=os.Open(path)
+	if err!=nil{
+		panic(err)
+	}
+	defer file.Close()
+
+	byte1,err:=ioutil.ReadAll(file)
+	fmt.Println(&quot;第一次读取文件内容：&quot;,string(byte1))
+	byte2,err:=ioutil.ReadAll(file)
+	fmt.Println(&quot;第二次读取文件内容：&quot;,string(byte2))
+}
 </code></pre>
 
-<p>每一个使用docker run启动的容器其实都具有单独的网络命名空间，Docker为我们提供了四种不同的网络模式：</p>
+<p>​   通过上面的代码中的2种示例(读取网页响应体，读取文件内容)，我们发现无论读取的是网页的响应体还是文件内容，当我们再次读取的时候，已经读取不到内容了。所以我们猜测应该是ioutil.ReadAll()是有记录偏移量，所以会出现第二次读取不到的情况。作为client端处理response的时候会碰到这个问题，作为server端要处理request body的时候，一样会遇到此问题，那么该如何解决这个问题呢？</p>
 
-<ul>
-<li>Host</li>
-<li>Container</li>
-<li>None</li>
-<li>Bridge(默认)</li>
-</ul>
+<p>​   我们去看resp.Body源代码，发现resp,Body的类型是<strong>io.ReadCloser</strong>,</p>
 
-<h5 id="docker之bridge网桥模式">docker之bridge网桥模式</h5>
+<pre><code class="language-go">// http客户端(Client)和传输(Transport)保证响应体总是非空的，即使响应没有响应体或0长响应
+// 体。关闭响应体是调用者的责任。默认http客户端传输(Transport)不会尝试复用keep-alive的
+// http/1.0、http/1.1连接，除非请求体已被完全读出而且被关闭了。
+Body io.ReadCloser
 
-<p>​   docker网桥模式下的作用</p>
-
-<ul>
-<li>分配隔离的网络命名空间</li>
-<li>为所有的容器设置IP地址</li>
-<li>docker服务启动后在宿主机上创建虚拟网桥docker0，随后在该主机上启动的全部容器在默认情况下都与该网桥相连</li>
-</ul>
-
-<p>启动容器网桥模式下，创建网络的过程：</p>
-
-<ol>
-<li>首先创建一对虚拟网卡，两个虚拟网卡组成数据通道，其中一个放在创建的容器中，会加入到名为docker0网桥中。</li>
-</ol>
-
-<p>查看当前网桥的接口</p>
-
-<pre><code class="language-bash">   wangfeng@wangfeng-PC:~$ brctl show
-   bridge name	bridge id		STP enabled	interfaces
-   docker0		8000.02423bdf4596	no		vethd7f45fd
-   wangfeng@wangfeng-PC:~$
+// ReadCloser is the interface that groups the basic Read and Close methods.
+type ReadCloser interface {
+	Reader
+	Closer
+}
 </code></pre>
 
-<ol>
-<li>docker0为每一个容器分配一个新的ip地址并讲docker0的IP地址设置为默认的网关。网桥docker0通过iptables中的配置与宿主机上的网卡相连，所有符合条件的请求都会通过iptables转发到docekr0并由网桥分发给对应的机器。</li>
-</ol>
+<p>​   于是有一个方法就是再造一个io.ReadCloser,如下：</p>
 
-<p>查看docker容器内部的网关</p>
+<pre><code class="language-go">// 测试读取文件内容，2次读取文件内容
+func readFile(path string) {
+	file,err:=os.Open(path)
+	if err!=nil{
+		panic(err)
+	}
+	defer file.Close()
 
-<pre><code class="language-bash"># 查看路由表也就可以看到网关了
-/ # route -n
-Kernel IP routing table
-Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
-0.0.0.0         176.17.0.1      0.0.0.0         UG    0      0        0 eth0
-176.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 eth0
-/ # 
+	byte1,err:=ioutil.ReadAll(file)
+	fmt.Println(&quot;第一次读取文件内容：&quot;,string(byte1))
+	byte2,err:=ioutil.ReadAll(file)
+	fmt.Println(&quot;第二次读取文件内容：&quot;,string(byte2))
 
-# 下面命令也可以看到
-# 
-/ # ip route show
-default via 176.17.0.1 dev eth0 
-176.17.0.0/16 dev eth0  src 176.17.0.2 
-/ # 
+	// 再造一个io.ReadCloser可以实现第二次还读取到文件内容
+	file2:=ioutil.NopCloser(bytes.NewBuffer(byte1))
+	byte3,_:=ioutil.ReadAll(file2)
+	fmt.Println(&quot;第二次读取文件内容：&quot;,string(byte3))
+}
 </code></pre>
 
 <hr />
 
-<h4 id="cgroups">CGroups</h4>
+<h4 id="resp-body为何需要人为的手动关闭">resp.Body为何需要人为的手动关闭？</h4>
 
-<p>​   Namespace命名空间提供的是文件系统、网络、与宿主机之间的进程的相互隔离，而CGroups提供的是物理资源上的隔离，比如CPU、内存、磁盘IO、网络带宽。</p>
+<p>​   作为client端处理response的时候，有一点要注意的是，body一定要手动close,否则会造成GC回收不到，继而产生内存泄露。其实在go的官方源码注释中，也明确注明了response body需要调用方法进行手动关闭【It is the caller`s responsibility to close Body:关闭是调用者的责任】，至于response body为什么需要进行关闭</p>
 
-<h4 id="unionfs">UnionFS</h4>
+<p>​   那么作为client端生成的request body，需不需要手动关闭呢，答案是不需要的，net/http中的func (c *Client) Do(req *Request) (*Response, error)会调用Close()。</p>
 
-<p>​   Linux 的命名空间和控制组分别解决了不同资源隔离的问题，前者解决了进程、网络以及文件系统的隔离，后者实现了 CPU、内存等资源的隔离，但是在 Docker 中还有另一个非常重要的问题需要解决 - 也就是镜像。</p>
+<p>​   同样的，作为server端接收的request body，也是需要关闭，由Server自动进行关闭【The Server will close the request body. The ServeHTTP Handler does not need to：服务器将关闭请求正文。 ServeHTTP处理程序不需要。】</p>
 
-<p>​   Docker 镜像其实本质就是一个压缩包，我们可以使用下面的命令将一个 Docker 镜像中的文件导出：</p>
-
-<pre><code class="language-bash">wangfeng@wangfeng-PC:~/docker$ pwd
-/home/wangfeng/docker
-wangfeng@wangfeng-PC:~/docker$ ll
-总用量 4
-drwxr-xr-x 12 wangfeng wangfeng 4096 8月  19 15:09 rootfs
-wangfeng@wangfeng-PC:~/docker$ docker export $(docker create busybox) | tar -C rootfs -xvf -
-# 你可以看到这个 busybox 镜像中的目录结构与 Linux 操作系统的根目录中的内容并没有太多的区别，可以说 Docker 镜像就是一个文件。
-wangfeng@wangfeng-PC:~/docker$ ls rootfs/
-bin  dev  etc  home  proc  root  sys  tmp  usr  var
-wangfeng@wangfeng-PC:~/docker$ 
-</code></pre>
-
-<h4 id="存储驱动">存储驱动</h4>
-
-<p>​   Docker 中的每一个镜像都是由一系列只读的层组成的，Dockerfile 中的每一个命令都会在已有的只读层上创建一个新的层。</p>
-
-<p>​   当镜像被 docker run 命令创建时就会在镜像的最上层添加一个可写的层，也就是容器层，所有对于运行时容器的修改其实都是对这个容器读写层的修改。</p>
-
-<p>​   容器和镜像的区别就在于，所有的镜像都是只读的，而每一个容器其实等于镜像加上一个可读写的层，也就是同一个镜像可以对应多个容器。</p>
-
-<p>​   不同的存储驱动在存储镜像和容器文件时也有着完全不同的实现，常见docker存储驱动有:</p>
-
-<ul>
-<li>devicemapper</li>
-<li>overlay2</li>
-</ul>
-
-<pre><code class="language-bash"># 查看当前系统Docker使用了哪种存储驱动
-root@wangfeng-PC:/var/lib/docker/containers# docker info | grep Storage
-Storage Driver: overlay2
-root@wangfeng-PC:/var/lib/docker/containers# 
-</code></pre>
+<p>更多详细内容请参考：<a href="https://www.jianshu.com/p/407fada3cc9d">为什么Response.Body需要被关闭</a></p>
               
             </div>
           </div>
@@ -381,7 +398,7 @@ root@wangfeng-PC:/var/lib/docker/containers#
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">标签</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/docker/">docker</a>
+  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/golang/">golang</a>
 
                   </div>
                 
@@ -394,7 +411,7 @@ root@wangfeng-PC:/var/lib/docker/containers#
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" data-tooltip="golang项目常用框架技术选型">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -402,7 +419,7 @@ root@wangfeng-PC:/var/lib/docker/containers#
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/deepin-linux%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E7%BB%99windows/" data-tooltip="deepin linux共享文件给windows">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/gorilla/mux%E6%B3%A8%E5%86%8C%E8%B7%AF%E7%94%B1%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/" data-tooltip="gorilla/mux注册路由使用详解">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -420,19 +437,19 @@ root@wangfeng-PC:/var/lib/docker/containers#
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -480,7 +497,7 @@ root@wangfeng-PC:/var/lib/docker/containers#
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/golang%E9%A1%B9%E7%9B%AE%E5%B8%B8%E7%94%A8%E6%A1%86%E6%9E%B6%E6%8A%80%E6%9C%AF%E9%80%89%E5%9E%8B/" data-tooltip="golang项目常用框架技术选型">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -488,7 +505,7 @@ root@wangfeng-PC:/var/lib/docker/containers#
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/08/deepin-linux%E5%85%B1%E4%BA%AB%E6%96%87%E4%BB%B6%E7%BB%99windows/" data-tooltip="deepin linux共享文件给windows">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/gorilla/mux%E6%B3%A8%E5%86%8C%E8%B7%AF%E7%94%B1%E4%BD%BF%E7%94%A8%E8%AF%A6%E8%A7%A3/" data-tooltip="gorilla/mux注册路由使用详解">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -506,19 +523,19 @@ root@wangfeng-PC:/var/lib/docker/containers#
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/08/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -548,19 +565,19 @@ root@wangfeng-PC:/var/lib/docker/containers#
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fdocker%25E6%25A0%25B8%25E5%25BF%2583%25E6%258A%2580%25E6%259C%25AF%25E4%25BB%25A5%25E5%258F%258A%25E5%25AE%259E%25E7%258E%25B0%25E5%258E%259F%25E7%2590%2586%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E5%25A4%2584%25E7%2590%2586http-response%25E7%25A2%25B0%25E5%2588%25B0%25E7%259A%2584%25E9%2597%25AE%25E9%25A2%2598%25E5%2592%258C%25E9%259C%2580%25E8%25A6%2581%25E6%25B3%25A8%25E6%2584%258F%25E7%259A%2584%25E7%2582%25B9%2F">
           <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fdocker%25E6%25A0%25B8%25E5%25BF%2583%25E6%258A%2580%25E6%259C%25AF%25E4%25BB%25A5%25E5%258F%258A%25E5%25AE%259E%25E7%258E%25B0%25E5%258E%259F%25E7%2590%2586%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E5%25A4%2584%25E7%2590%2586http-response%25E7%25A2%25B0%25E5%2588%25B0%25E7%259A%2584%25E9%2597%25AE%25E9%25A2%2598%25E5%2592%258C%25E9%259C%2580%25E8%25A6%2581%25E6%25B3%25A8%25E6%2584%258F%25E7%259A%2584%25E7%2582%25B9%2F">
           <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F08%2Fdocker%25E6%25A0%25B8%25E5%25BF%2583%25E6%258A%2580%25E6%259C%25AF%25E4%25BB%25A5%25E5%258F%258A%25E5%25AE%259E%25E7%258E%25B0%25E5%258E%259F%25E7%2590%2586%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F09%2Fgolang%25E5%25A4%2584%25E7%2590%2586http-response%25E7%25A2%25B0%25E5%2588%25B0%25E7%259A%2584%25E9%2597%25AE%25E9%25A2%2598%25E5%2592%258C%25E9%259C%2580%25E8%25A6%2581%25E6%25B3%25A8%25E6%2584%258F%25E7%259A%2584%25E7%2582%25B9%2F">
           <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
         </a>
       </li>
@@ -877,9 +894,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/08\/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86\/';
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/09\/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9\/';
           
-            this.page.identifier = '\/2018\/08\/docker%E6%A0%B8%E5%BF%83%E6%8A%80%E6%9C%AF%E4%BB%A5%E5%8F%8A%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86\/'
+            this.page.identifier = '\/2018\/09\/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9\/'
           
         };
         (function() {
