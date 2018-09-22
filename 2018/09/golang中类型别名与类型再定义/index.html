@@ -355,6 +355,12 @@ func (f HandlerFunc) ServeHTTP(w ResponseWriter, r *Request) {
 // 接口适配器,因为实现了ServeHTTP方法)，这里函数和这个接口仅有的方法有相同的函数签名。实际上，这个技巧让一个单一的
 // 类型例如MyHandler以多种方式满足http.Handler接口：一种通过它的list方法，一种通过它的price方法等等。
 </code></pre>
+
+<pre><code class="language-go">所以为了方便，net/http包提供了一个全局的ServeMux实例DefaultServerMux和包级别的http.Handle和http.HandleFunc函数。
+现在，为了使用DefaultServeMux作为服务器的主handler，我们不需要将它传给ListenAndServe函数；nil值就可以工作。
+
+基于并发考虑，web服务器应该在一个新的协程中调用每一个handler，所以当handler获取其它协程或者这个handler本身的其它请求也可以访问的变量时一定要使用预防措施比如锁机制。
+</code></pre>
               
             </div>
           </div>
