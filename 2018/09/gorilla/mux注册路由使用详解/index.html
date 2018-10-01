@@ -353,7 +353,8 @@ http.HandleFunc:
 调用http.HandleFunc-&gt;调用DefaultServerMux.HandleFunc-&gt;调用DefaultServerMux的Handle
 
 http.ListenAndServe: 
-实例化Server-&gt;调用Server.ListenAndServe()-&gt;为每一个请求建立一个连接,同时进行逻辑的处理，进行go c.serve()，读取每个请求的内容-&gt;调用handler.ServeHttp-&gt;根据request选择handler-&gt;mux.handler(r).ServeHTTP(w,r)，选择handler。
+实例化Server-&gt;调用Server.ListenAndServe()-&gt;为每一个请求建立一个连接,同时进行逻辑的处理，进行go c.serve()，
+读取每个请求的内容-&gt;调用handler.ServeHttp-&gt;根据request选择handler-&gt;mux.handler(r).ServeHTTP(w,r)，选择handler。
 </code></pre>
 
 <h4 id="go-net-http包分析">go net/http包分析</h4>
