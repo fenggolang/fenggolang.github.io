@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/</loc>
+    <lastmod>2018-10-04T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/</loc>
     <lastmod>2018-10-01T00:00:00+00:00</lastmod>
   </url>
@@ -90,8 +95,14 @@
   </url>
   
   <url>
+    <loc>https://fenggolang.github.io/tags/http/</loc>
+    <lastmod>2018-10-04T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://fenggolang.github.io/</loc>
-    <lastmod>2018-10-01T00:00:00+00:00</lastmod>
+    <lastmod>2018-10-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -104,6 +115,12 @@
   <url>
     <loc>https://fenggolang.github.io/tags/linux/</loc>
     <lastmod>2018-08-18T00:00:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://fenggolang.github.io/categories/network/</loc>
+    <lastmod>2018-10-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -127,7 +144,7 @@
   
   <url>
     <loc>https://fenggolang.github.io/post/</loc>
-    <lastmod>2018-10-01T00:00:00+00:00</lastmod>
+    <lastmod>2018-10-04T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   

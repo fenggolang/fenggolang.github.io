@@ -22,7 +22,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Hugo 0.46 with theme Tranquilpeak 0.4.3-BETA">
-    <title>golang中HTTP包默认路由匹配规则</title>
+    <title>扒一扒HTTP构成</title>
     <meta name="author" content="wang pengcheng">
     <meta name="keywords" content="">
 
@@ -30,21 +30,21 @@
     
 
     
-    <meta name="description" content="Go的http有两个核心功能：Conn、ServeMux；
-Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规则、如何查找路由规则。
-">
-    <meta property="og:description" content="Go的http有两个核心功能：Conn、ServeMux；
-Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规则、如何查找路由规则。
-">
+    <meta name="description" content="HTTP全称为HyperText Transfer Protocol，从名字不难看出这是一种基于文本的网络协议，对于初学者来说比较友好，容易上手。各平台上的一些第三方库都对HTTP做了进一步的封装，让HTTP变得更加亲民，但往往拿来就用的技术，很容易忽视其背后隐藏的细节。今天一起来扒一扒HTTP到底是如何构成的。
+
+扒一扒HTTP的构成">
+    <meta property="og:description" content="HTTP全称为HyperText Transfer Protocol，从名字不难看出这是一种基于文本的网络协议，对于初学者来说比较友好，容易上手。各平台上的一些第三方库都对HTTP做了进一步的封装，让HTTP变得更加亲民，但往往拿来就用的技术，很容易忽视其背后隐藏的细节。今天一起来扒一扒HTTP到底是如何构成的。
+
+扒一扒HTTP的构成">
     <meta property="og:type" content="blog">
-    <meta property="og:title" content="golang中HTTP包默认路由匹配规则">
-    <meta property="og:url" content="/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+    <meta property="og:title" content="扒一扒HTTP构成">
+    <meta property="og:url" content="/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
     <meta property="og:site_name" content="Hugo tranquilpeak theme">
     <meta name="twitter:card" content="summary">
     <meta name="twitter:title" content="Hugo tranquilpeak theme">
-    <meta name="twitter:description" content="Go的http有两个核心功能：Conn、ServeMux；
-Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规则、如何查找路由规则。
-">
+    <meta name="twitter:description" content="HTTP全称为HyperText Transfer Protocol，从名字不难看出这是一种基于文本的网络协议，对于初学者来说比较友好，容易上手。各平台上的一些第三方库都对HTTP做了进一步的封装，让HTTP变得更加亲民，但往往拿来就用的技术，很容易忽视其背后隐藏的细节。今天一起来扒一扒HTTP到底是如何构成的。
+
+扒一扒HTTP的构成">
     
     
 
@@ -219,15 +219,15 @@ Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规�
             <div class="post-header main-content-wrap text-left">
   
     <h1 class="post-title" itemprop="headline">
-      golang中HTTP包默认路由匹配规则
+      扒一扒HTTP构成
     </h1>
   
   
   <div class="postShorten-meta post-meta">
     
-      <time itemprop="datePublished" datetime="2018-10-01T00:00:00Z">
+      <time itemprop="datePublished" datetime="2018-10-04T00:00:00Z">
         
-  十月 1, 2018
+  十月 4, 2018
 
       </time>
     
@@ -236,7 +236,7 @@ Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规�
   
     <span>发布在</span>
     
-      <a class="category-link" href="https://fenggolang.github.io/categories/programming">programming</a>
+      <a class="category-link" href="https://fenggolang.github.io/categories/network">network</a>
     
   
 
@@ -246,66 +246,9 @@ Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规�
           
           <div class="post-content markdown" itemprop="articleBody">
             <div class="main-content-wrap">
-              <p>Go的http有两个核心功能：Conn、ServeMux；
-Go的DefaultServeMux默认路由器的2个核心要点：如何添加路由规则、如何查找路由规则。
-</p>
+              <p>HTTP全称为HyperText Transfer Protocol，从名字不难看出这是一种基于文本的网络协议，对于初学者来说比较友好，容易上手。各平台上的一些第三方库都对HTTP做了进一步的封装，让HTTP变得更加亲民，但往往拿来就用的技术，很容易忽视其背后隐藏的细节。今天一起来扒一扒HTTP到底是如何构成的。
 
-<ul>
-<li><p>Conn: 与我们一般编写的http服务器不同, Go为了实现高并发和高性能, 使用了goroutines来处理Conn的读写事件, 这样每个请求都能保持独立，相互不会阻塞，可以高效的响应网络事件。这是Go高效的保证。</p></li>
-
-<li><p>ServeMux: 路由器里面存储相应的路由规则,俗称路由注册。后面根据用户请求的URL和路由器里面存储的map去匹配的，当匹配到之后返回存储的handler，调用这个handler的ServeHTTP接口就可以执行到相应的函数了。
-Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用以配置外部路由器的，它是一个Handler接口，即外部路由器只要实现了Handler接口就可以,我们可以在自己实现的路由器的ServeHTTP里面实现自定义路由功能。</p>
-
-<h4 id="代码执行流程">代码执行流程</h4>
-
-<p>通过对http包的分析之后，现在让我们来梳理一下整个的代码执行过程。</p></li>
-</ul>
-
-<p>首先调用Http.HandleFunc</p>
-
-<p>按顺序做了几件事：</p>
-
-<p>1 调用了DefaultServeMux的HandleFunc</p>
-
-<p>2 调用了DefaultServeMux的Handle</p>
-
-<p>3 往DefaultServeMux的map[string]muxEntry中增加对应的handler和路由规则</p>
-
-<p>其次调用http.ListenAndServe(&rdquo;:9090&rdquo;, nil)</p>
-
-<p>按顺序做了几件事情：</p>
-
-<p>1 实例化Server</p>
-
-<p>2 调用Server的ListenAndServe()</p>
-
-<p>3 调用net.Listen(&ldquo;tcp&rdquo;, addr)监听端口</p>
-
-<p>4 启动一个for循环，在循环体中Accept请求</p>
-
-<p>5 对每个请求实例化一个Conn，并且开启一个goroutine为这个请求进行服务go c.serve()</p>
-
-<p>6 读取每个请求的内容w, err := c.readRequest()</p>
-
-<p>7 判断handler是否为空，如果没有设置handler（这个例子就没有设置handler），handler就设置为DefaultServeMux</p>
-
-<p>8 调用handler的ServeHttp</p>
-
-<p>9 在这个例子中，下面就进入到DefaultServeMux.ServeHttp</p>
-
-<p>10 根据request选择handler，并且进入到这个handler的ServeHTTP</p>
-
-<p>mux.handler&reg;.ServeHTTP(w, r)
-11 选择handler：</p>
-
-<p>A 判断是否有路由能满足这个request（循环遍历ServeMux的muxEntry）</p>
-
-<p>B 如果有路由满足，调用这个路由handler的ServeHTTP</p>
-
-<p>C 如果没有路由满足，调用NotFoundHandler的ServeHTTP</p>
-
-<p><a href="https://studygolang.com/resources/4657">GOLANG 中HTTP包默认路由匹配规则阅读笔记</a>
-<a href="https://www.jianshu.com/p/71d3991a3187">Go的web工作原理</a></p>
+<a href="http://mrpeak.cn/blog/http-constitution/">扒一扒HTTP的构成</a></p>
               
             </div>
           </div>
@@ -317,7 +260,7 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
                   <div class="post-footer-tags">
                     <span class="text-color-light text-small">标签</span><br/>
                     
-  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/golang/">golang</a>
+  <a class="tag tag--primary tag--small" href="https://fenggolang.github.io/tags/http/">http</a>
 
                   </div>
                 
@@ -330,7 +273,7 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/" data-tooltip="扒一扒HTTP构成">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -338,7 +281,7 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/" data-tooltip="golang处理http response碰到的问题和需要注意的点">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/" data-tooltip="golang中HTTP包默认路由匹配规则">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -356,19 +299,19 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -416,7 +359,7 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
           
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/" data-tooltip="扒一扒HTTP构成">
+                <a class="post-action-btn btn btn--disabled">
               
                   <i class="fa fa-angle-left"></i>
                   <span class="hide-xs hide-sm text-small icon-ml">下一篇</span>
@@ -424,7 +367,7 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
             </li>
             <li class="post-action">
               
-                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/09/golang%E5%A4%84%E7%90%86http-response%E7%A2%B0%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%E5%92%8C%E9%9C%80%E8%A6%81%E6%B3%A8%E6%84%8F%E7%9A%84%E7%82%B9/" data-tooltip="golang处理http response碰到的问题和需要注意的点">
+                <a class="post-action-btn btn btn--default tooltip--top" href="https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/" data-tooltip="golang中HTTP包默认路由匹配规则">
               
                   <span class="hide-xs hide-sm text-small icon-mr">上一篇</span>
                   <i class="fa fa-angle-right"></i>
@@ -442,19 +385,19 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
         </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
               <i class="fa fa-facebook-official"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
               <i class="fa fa-twitter"></i>
             </a>
           </li>
         
           <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/10/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=https://fenggolang.github.io/2018/10/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90/">
               <i class="fa fa-google-plus"></i>
             </a>
           </li>
@@ -484,19 +427,19 @@ Go其实支持外部实现的路由器 ListenAndServe的第二个参数就是用
   <ul class="share-options">
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F10%2Fgolang%25E4%25B8%25ADhttp%25E5%258C%2585%25E9%25BB%2598%25E8%25AE%25A4%25E8%25B7%25AF%25E7%2594%25B1%25E5%258C%25B9%25E9%2585%258D%25E8%25A7%2584%25E5%2588%2599%2F">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ffenggolang.github.io%2F2018%2F10%2F%25E6%2589%2592%25E4%25B8%2580%25E6%2589%2592http%25E6%259E%2584%25E6%2588%2590%2F">
           <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F10%2Fgolang%25E4%25B8%25ADhttp%25E5%258C%2585%25E9%25BB%2598%25E8%25AE%25A4%25E8%25B7%25AF%25E7%2594%25B1%25E5%258C%25B9%25E9%2585%258D%25E8%25A7%2584%25E5%2588%2599%2F">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=https%3A%2F%2Ffenggolang.github.io%2F2018%2F10%2F%25E6%2589%2592%25E4%25B8%2580%25E6%2589%2592http%25E6%259E%2584%25E6%2588%2590%2F">
           <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
         </a>
       </li>
     
       <li class="share-option">
-        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F10%2Fgolang%25E4%25B8%25ADhttp%25E5%258C%2585%25E9%25BB%2598%25E8%25AE%25A4%25E8%25B7%25AF%25E7%2594%25B1%25E5%258C%25B9%25E9%2585%258D%25E8%25A7%2584%25E5%2588%2599%2F">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=https%3A%2F%2Ffenggolang.github.io%2F2018%2F10%2F%25E6%2589%2592%25E4%25B8%2580%25E6%2589%2592http%25E6%259E%2584%25E6%2588%2590%2F">
           <i class="fa fa-google-plus"></i><span>分享到 Google&#43;</span>
         </a>
       </li>
@@ -793,9 +736,9 @@ $(document).ready(function() {
     
       <script>
         var disqus_config = function () {
-          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/10\/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99\/';
+          this.page.url = 'https:\/\/fenggolang.github.io\/2018\/10\/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90\/';
           
-            this.page.identifier = '\/2018\/10\/golang%E4%B8%ADhttp%E5%8C%85%E9%BB%98%E8%AE%A4%E8%B7%AF%E7%94%B1%E5%8C%B9%E9%85%8D%E8%A7%84%E5%88%99\/'
+            this.page.identifier = '\/2018\/10\/%E6%89%92%E4%B8%80%E6%89%92http%E6%9E%84%E6%88%90\/'
           
         };
         (function() {
